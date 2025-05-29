@@ -6,10 +6,12 @@ import HomeStack from "./HomeStack";
 import MenuStack from "./MenuStack";
 import ProfileStack from "./ProfileStack";
 import WaitEstimationStack from "./WaitEstimationStack";
+import { useSelector } from "react-redux";
 
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
+  const { isLogin } = useSelector((state) => state.user);
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -50,7 +52,7 @@ export default function TabNavigator() {
       <Tab.Screen
         name="Profile"
         component={ProfileStack}
-        options={{ title: "마이페이지" }}
+        options={{ title: isLogin ? "마이페이지" : "로그인" }}
       />
     </Tab.Navigator>
   );
