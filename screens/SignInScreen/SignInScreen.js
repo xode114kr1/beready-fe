@@ -9,10 +9,6 @@ export default function SignInScreen({ navigation }) {
         onPress={() => navigation.navigate("SignUp")}
       />
       <View style={{ marginTop: 10 }} />
-      <Button
-        title="➡️ 마이페이지 이동 (임시)"
-        onPress={() => navigation.navigate("MyPage")}
-      />
     </View>
   );
 }

@@ -4,9 +4,10 @@ import { Ionicons } from "@expo/vector-icons";
 
 import HomeStack from "./HomeStack";
 import MenuStack from "./MenuStack";
-import ProfileStack from "./ProfileStack";
 import WaitEstimationStack from "./WaitEstimationStack";
 import { useSelector } from "react-redux";
+import MyPageStack from "./MyPageStack";
+import SignInStack from "./SignInStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -51,7 +52,7 @@ export default function TabNavigator() {
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileStack}
+        component={isLogin ? MyPageStack : SignInStack}
         options={{ title: isLogin ? "마이페이지" : "로그인" }}
       />
     </Tab.Navigator>
