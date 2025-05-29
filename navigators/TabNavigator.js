@@ -8,11 +8,12 @@ import WaitEstimationStack from "./WaitEstimationStack";
 import { useSelector } from "react-redux";
 import MyPageStack from "./MyPageStack";
 import SignInStack from "./SignInStack";
+import MenuAdminScreen from "../screens/MenuAdminScreen/MenuAdminScreen";
 
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
-  const { isLogin } = useSelector((state) => state.user);
+  const { isLogin, isAdmin } = useSelector((state) => state.user);
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -55,6 +56,22 @@ export default function TabNavigator() {
         component={isLogin ? MyPageStack : SignInStack}
         options={{ title: isLogin ? "마이페이지" : "로그인" }}
       />
+      {isAdmin && (
+        <Tab.Screen
+          name="Admin"
+          component={MenuAdminScreen}
+          options={{
+            title: "관리자",
+            tabBarIcon: ({ focused, color, size }) => (
+              <Ionicons
+                name={focused ? "settings" : "settings-outline"}
+                size={size}
+                color={color}
+              />
+            ),
+          }}
+        />
+      )}
     </Tab.Navigator>
   );
 }
