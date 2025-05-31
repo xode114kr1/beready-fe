@@ -1,25 +1,259 @@
-import { View, Text, StyleSheet, Button } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Modal,
+  Pressable,
+} from "react-native";
+import GradientScreenWrapper from "../../components/GradientScreenWrapper";
+import { useRoute } from "@react-navigation/native";
+import ReviewCard from "./components/ReviewCard";
+import Checkbox from "expo-checkbox";
 
-export default function ReviewScreen({ navigation }) {
+export default function ReviewScreen() {
+  const { name: initialName, category: initialCategory } = useRoute().params;
+
+  const [onlyMine, setOnlyMine] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(
+    initialCategory || "전체"
+  );
+  const [selectedMenu, setSelectedMenu] = useState(initialName || "전체");
+
+  const [categoryModalVisible, setCategoryModalVisible] = useState(false);
+  const [menuModalVisible, setMenuModalVisible] = useState(false);
+
+  const categories = ["전체", "한식", "분식", "퓨전"];
+
+  const menuByCategory = {
+    전체: [],
+    한식: ["제육볶음", "비빔밥"],
+    분식: ["등심돈까스", "김밥"],
+    퓨전: ["짜장면", "스파게티"],
+  };
+
+  const menuOptions =
+    selectedCategory === "전체"
+      ? [].concat(...Object.values(menuByCategory)) // 모든 메뉴
+      : menuByCategory[selectedCategory] || [];
+  const menuList = ["전체", ...menuOptions];
+
+  const allReviews = [
+    {
+      id: 1,
+      menu: "등심돈까스",
+      category: "한식",
+      user: "유저123",
+      isMine: true,
+      content: "돈까스 맛있었어요! 바삭함 굿~",
+      rating: 4.7,
+    },
+    {
+      id: 2,
+      menu: "제육볶음 정식",
+      category: "한식",
+      user: "유저123",
+      isMine: true,
+      content: "제육도 부드럽고 간도 딱 좋아요",
+      rating: 4.3,
+    },
+    {
+      id: 3,
+      menu: "비빔밥",
+      category: "한식",
+      user: "유저456",
+      isMine: false,
+      content: "야채 신선하고 고추장 맛남",
+      rating: 4.0,
+    },
+    {
+      id: 4,
+      menu: "짜장면",
+      category: "퓨전",
+      user: "유저123",
+      isMine: false,
+      content: "달지 않고 맛있어요",
+      rating: 4.1,
+    },
+    {
+      id: 5,
+      menu: "우동",
+      category: "분식",
+      user: "유저999",
+      isMine: true,
+      content: "국물 따뜻하고 면 쫄깃",
+      rating: 4.6,
+    },
+  ];
+
+  const filteredReviews = allReviews.filter((review) => {
+    if (onlyMine && !review.isMine) return false;
+    if (selectedCategory !== "전체" && review.category !== selectedCategory)
+      return false;
+    if (selectedMenu !== "전체" && review.menu !== selectedMenu) return false;
+    return true;
+  });
+
+  const handleEdit = (review) => console.log("수정", review);
+  const handleDelete = (id) => console.log("삭제", id);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>📝 리뷰 목록 화면</Text>
-      <Button
-        title="➡️ 리뷰 작성하기"
-        onPress={() => navigation.navigate("ReviewForm")}
-      />
-    </View>
+    <GradientScreenWrapper>
+      <View style={styles.container}>
+        <View style={styles.filterRow}>
+          <View style={styles.checkboxContainer}>
+            <Checkbox
+              value={onlyMine}
+              onValueChange={setOnlyMine}
+              color={onlyMine ? "#1E40AF" : undefined}
+              style={styles.checkbox}
+            />
+            <Text style={styles.checkboxLabel}>내 리뷰</Text>
+          </View>
+
+          <TouchableOpacity
+            onPress={() => setCategoryModalVisible(true)}
+            style={[styles.tag, { width: "20%" }]}
+          >
+            <Text style={styles.tagText}>{selectedCategory}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => setMenuModalVisible(true)}
+            style={[styles.tag, { width: "40%" }]}
+          >
+            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.tagText}>
+              {selectedMenu}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <FlatList
+          data={filteredReviews}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <ReviewCard
+              review={item}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          )}
+          contentContainerStyle={{ paddingBottom: 24 }}
+        />
+
+        <Modal transparent visible={categoryModalVisible} animationType="fade">
+          <Pressable
+            style={styles.modalOverlay}
+            onPress={() => setCategoryModalVisible(false)}
+          >
+            <View style={styles.modal}>
+              {categories.map((cat) => (
+                <TouchableOpacity
+                  key={cat}
+                  onPress={() => {
+                    setSelectedCategory(cat);
+                    setSelectedMenu("전체"); // 선택된 메뉴 초기화
+                    setCategoryModalVisible(false);
+                  }}
+                  style={styles.modalItem}
+                >
+                  <Text>{cat}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </Pressable>
+        </Modal>
+
+        <Modal transparent visible={menuModalVisible} animationType="fade">
+          <Pressable
+            style={styles.modalOverlay}
+            onPress={() => setMenuModalVisible(false)}
+          >
+            <View style={styles.modal}>
+              {menuList.map((m) => (
+                <TouchableOpacity
+                  key={m}
+                  onPress={() => {
+                    setSelectedMenu(m);
+                    setMenuModalVisible(false);
+                  }}
+                  style={styles.modalItem}
+                >
+                  <Text>{m}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </Pressable>
+        </Modal>
+      </View>
+    </GradientScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    padding: 20,
     flex: 1,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 16,
+  },
+  filterRow: {
+    flexDirection: "row",
+    gap: 8,
+    marginBottom: 12,
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    paddingHorizontal: "5%",
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderColor: "#1E40AF",
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 8,
+    width: "30%",
+  },
+  checkboxLabel: {
+    marginLeft: 8,
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#1E40AF",
+  },
+  tag: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#BFE2FF",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 20,
+  },
+  selectedTag: {
+    backgroundColor: "#A7D8FF",
+  },
+  tagText: {
+    fontSize: 15,
+    color: "#1E40AF",
+    fontWeight: "bold",
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.3)",
     justifyContent: "center",
     alignItems: "center",
   },
-  text: {
-    fontSize: 24,
-    marginBottom: 20,
+  modal: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 16,
+    width: 240,
+  },
+  modalItem: {
+    paddingVertical: 10,
   },
 });
