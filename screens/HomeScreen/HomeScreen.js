@@ -2,45 +2,48 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import colors from "../../styles/colors";
 import { useNavigation } from "@react-navigation/native";
+import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
   return (
-    <View style={styles.container}>
-      <View style={styles.restaurantBox}>
-        <Text style={styles.restaurantTitle}>위드센터식당 다래락</Text>
-        <Text style={styles.time}>Open 4시 30분</Text>
-        <Text style={styles.time}>Close 18시 30분</Text>
+    <GradientScreenWrapper>
+      <View style={styles.container}>
+        <View style={styles.restaurantBox}>
+          <Text style={styles.restaurantTitle}>위드센터식당 다래락</Text>
+          <Text style={styles.time}>Open 4시 30분</Text>
+          <Text style={styles.time}>Close 18시 30분</Text>
+        </View>
+        {/* 추천 메뉴 박스 */}
+        <View style={styles.recommendBox}>
+          <Text style={styles.recommendTitle}>오늘의 추천 메뉴 📸</Text>
+          <Text style={styles.recommendMenu}>제육볶음 정식 - 6,000원</Text>
+        </View>
+        {/* 버튼들 */}
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Wait")}
+        >
+          <Text style={styles.buttonText}>예상 대기인원 검색</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>학식당 메뉴 상세</Text>
+        </TouchableOpacity>
+        {/* 리뷰 박스 */}
+        <View style={styles.reviewBox}>
+          <Text style={styles.reviewStar}>⭐️ 동해물돈까스</Text>
+          <Text style={styles.reviewText}>
+            "돈까스 잘랐더니 바삭한 곳" - 유저123
+          </Text>
+        </View>
+        <View style={styles.reviewBox}>
+          <Text style={styles.reviewStar}>⭐️ 동해물돈까스</Text>
+          <Text style={styles.reviewText}>
+            "돈까스 잘랐더니 바삭한 곳" - 유저123
+          </Text>
+        </View>
       </View>
-      {/* 추천 메뉴 박스 */}
-      <View style={styles.recommendBox}>
-        <Text style={styles.recommendTitle}>오늘의 추천 메뉴 📸</Text>
-        <Text style={styles.recommendMenu}>제육볶음 정식 - 6,000원</Text>
-      </View>
-      {/* 버튼들 */}
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Wait")}
-      >
-        <Text style={styles.buttonText}>예상 대기인원 검색</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>학식당 메뉴 상세</Text>
-      </TouchableOpacity>
-      {/* 리뷰 박스 */}
-      <View style={styles.reviewBox}>
-        <Text style={styles.reviewStar}>⭐️ 동해물돈까스</Text>
-        <Text style={styles.reviewText}>
-          "돈까스 잘랐더니 바삭한 곳" - 유저123
-        </Text>
-      </View>
-      <View style={styles.reviewBox}>
-        <Text style={styles.reviewStar}>⭐️ 동해물돈까스</Text>
-        <Text style={styles.reviewText}>
-          "돈까스 잘랐더니 바삭한 곳" - 유저123
-        </Text>
-      </View>
-    </View>
+    </GradientScreenWrapper>
   );
 }
 
