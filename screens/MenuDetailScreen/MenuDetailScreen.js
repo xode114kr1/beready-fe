@@ -1,25 +1,182 @@
-import { View, Text, StyleSheet, Button } from "react-native";
+import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import GradientScreenWrapper from "../../components/GradientScreenWrapper";
+import colors from "../../styles/colors";
+import { useNavigation } from "@react-navigation/native";
 
-export default function MenuDetailScreen({ navigation }) {
+export default function MenuDetailScreen({ route }) {
+  const { menu } = route.params;
+  const navigator = useNavigation();
+  const reviews = [
+    {
+      id: 1,
+      user: "유저123",
+      date: "2025-05-07",
+      content: "제육이 부드럽고 간도 적당해서 너무 맛있었어요!",
+      rating: 4.5,
+    },
+    {
+      id: 2,
+      user: "유저123",
+      date: "2025-05-07",
+      content: "제육이 부드럽고 간도 적당해서 너무 맛있었어요!",
+      rating: 4.5,
+    },
+    {
+      id: 3,
+      user: "유저123",
+      date: "2025-05-07",
+      content: "제육이 부드럽고 간도 적당해서 너무 맛있었어요!",
+      rating: 4.5,
+    },
+  ];
+
+  const renderStars = (rating) => {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating - fullStars >= 0.5;
+    return (
+      <>
+        {"★".repeat(fullStars)}
+        {halfStar && "½"}
+        {"☆".repeat(5 - fullStars - (halfStar ? 1 : 0))}
+      </>
+    );
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>📄 메뉴 상세 화면</Text>
-      <Button
-        title="➡️ 리뷰 목록으로 이동"
-        onPress={() => navigation.navigate("Review")}
-      />
-    </View>
+    <GradientScreenWrapper>
+      <ScrollView style={styles.container}>
+        <View style={styles.card}>
+          <View style={styles.image_view}>
+            <Image source={{ uri: menu.image }} style={styles.image} />
+          </View>
+          <Text style={styles.name}>{menu.name}</Text>
+          <Text style={styles.price}>
+            <Text style={{ fontWeight: "bold" }}>가격 : </Text>
+            {menu.price.toLocaleString()}원
+          </Text>
+          <Text style={styles.description}>
+            <Text style={{ fontWeight: "bold" }}>설명 : </Text>달콤한 양념이
+            조화를 이루는 인기 메뉴입니다
+          </Text>
+          <Text style={styles.rating}>
+            <Text style={{ fontWeight: "bold" }}>평점 : </Text>
+            {renderStars(4.2)} (4.2)
+          </Text>
+        </View>
+
+        <Text style={styles.reviewTitle}>📝 대표 리뷰</Text>
+
+        {reviews.map((review) => (
+          <View key={review.id} style={styles.reviewBox}>
+            <Text style={styles.reviewUser}>
+              {review.user} · {review.date}
+            </Text>
+            <Text style={styles.reviewContent}>{review.content}</Text>
+            <Text style={styles.reviewRating}>
+              ⭐ {renderStars(review.rating)}
+            </Text>
+          </View>
+        ))}
+
+        <TouchableOpacity
+          style={styles.moreButton}
+          onPress={() =>
+            navigator.navigate("Review", {
+              name: menu.name,
+              category: menu.category,
+            })
+          }
+        >
+          <Text style={styles.moreButtonText}>리뷰 더보기</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </GradientScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    padding: 20,
   },
-  text: {
-    fontSize: 24,
+  card: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 12,
+    padding: 16,
+    backgroundColor: "#fff",
+    marginBottom: 24,
+    borderLeftColor: colors.leftBorder,
+    borderLeftWidth: 5,
+  },
+  image_view: {
+    width: "100%",
+    height: 180,
+    marginBottom: 12,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 12,
+    resizeMode: "cover",
+  },
+  name: {
+    fontSize: 25,
+    fontWeight: "bold",
+    marginBottom: 8,
+  },
+  price: {
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  description: {
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  rating: {
+    fontSize: 14,
+  },
+  reviewTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 12,
+  },
+  reviewBox: {
+    backgroundColor: "#DFF2FF",
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 12,
+  },
+  reviewUser: {
+    fontWeight: "bold",
+    marginBottom: 4,
+  },
+  reviewContent: {
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  reviewRating: {
+    fontSize: 13,
+  },
+  moreButton: {
+    marginTop: 12,
     marginBottom: 20,
+    alignSelf: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    backgroundColor: "#BFE2FF",
+  },
+  moreButtonText: {
+    color: "#2471D6",
+    fontWeight: "bold",
   },
 });
