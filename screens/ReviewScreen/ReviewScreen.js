@@ -103,15 +103,23 @@ export default function ReviewScreen() {
     <GradientScreenWrapper>
       <View style={styles.container}>
         <View style={styles.filterRow}>
-          <View style={styles.checkboxContainer}>
+          <TouchableOpacity
+            style={[styles.checkboxContainer, onlyMine && styles.checked]}
+            onPress={() => setOnlyMine((prev) => !prev)}
+            activeOpacity={0.7}
+          >
             <Checkbox
               value={onlyMine}
               onValueChange={setOnlyMine}
               color={onlyMine ? "#1E40AF" : undefined}
               style={styles.checkbox}
             />
-            <Text style={styles.checkboxLabel}>내 리뷰</Text>
-          </View>
+            <Text
+              style={[styles.checkboxLabel, onlyMine && styles.checkedLabel]}
+            >
+              내 리뷰
+            </Text>
+          </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => setCategoryModalVisible(true)}
@@ -219,11 +227,18 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     width: "30%",
   },
+  checked: {
+    backgroundColor: "#1E40AF",
+  },
   checkboxLabel: {
     marginLeft: 8,
     fontSize: 14,
     fontWeight: "bold",
     color: "#1E40AF",
+  },
+
+  checkedLabel: {
+    color: "#FFFFFF", // Text에 적용
   },
   tag: {
     justifyContent: "center",

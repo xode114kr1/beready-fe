@@ -9,7 +9,7 @@ export default function WaitEstimationStack() {
     <Stack.Navigator
       screenOptions={{
         headerTransparent: true,
-        headerTitle: "메뉴",
+        headerTitle: "대기열",
         headerBackTitleVisible: false,
         headerStyle: {
           backgroundColor: "transparent",
