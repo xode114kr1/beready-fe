@@ -9,12 +9,13 @@ import {
   Pressable,
 } from "react-native";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import ReviewCard from "./components/ReviewCard";
 import Checkbox from "expo-checkbox";
 
 export default function ReviewScreen() {
   const { name: initialName, category: initialCategory } = useRoute().params;
+  const navigation = useNavigation();
 
   const [onlyMine, setOnlyMine] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(
@@ -96,7 +97,10 @@ export default function ReviewScreen() {
     return true;
   });
 
-  const handleEdit = (review) => console.log("수정", review);
+  const handleEdit = (id) => {
+    navigation.navigate("ReviewForm", { reviewId: id });
+  };
+
   const handleDelete = (id) => console.log("삭제", id);
 
   return (
@@ -130,10 +134,18 @@ export default function ReviewScreen() {
 
           <TouchableOpacity
             onPress={() => setMenuModalVisible(true)}
-            style={[styles.tag, { width: "40%" }]}
+            style={[styles.tag, { width: "30%" }]}
           >
             <Text numberOfLines={1} ellipsizeMode="tail" style={styles.tagText}>
               {selectedMenu}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ReviewForm")}
+            style={[styles.tag, { width: "10%" }]}
+          >
+            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.tagText}>
+              +
             </Text>
           </TouchableOpacity>
         </View>

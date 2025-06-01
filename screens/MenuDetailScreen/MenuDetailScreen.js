@@ -13,6 +13,7 @@ import colors from "../../styles/colors";
 import { useNavigation } from "@react-navigation/native";
 
 export default function MenuDetailScreen({ route }) {
+  const navigation = useNavigation();
   const { menu } = route.params;
   const navigator = useNavigation();
   const reviews = [
@@ -86,18 +87,27 @@ export default function MenuDetailScreen({ route }) {
             </Text>
           </View>
         ))}
-
-        <TouchableOpacity
-          style={styles.moreButton}
-          onPress={() =>
-            navigator.navigate("Review", {
-              name: menu.name,
-              category: menu.category,
-            })
-          }
-        >
-          <Text style={styles.moreButtonText}>리뷰 더보기</Text>
-        </TouchableOpacity>
+        <View style={styles.button_contanier}>
+          <TouchableOpacity
+            style={styles.moreButton}
+            onPress={() =>
+              navigator.navigate("Review", {
+                name: menu.name,
+                category: menu.category,
+              })
+            }
+          >
+            <Text style={styles.moreButtonText}>리뷰 더보기</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.moreButton}
+            onPress={() =>
+              navigation.navigate("ReviewForm", { menu: menu.name })
+            }
+          >
+            <Text style={styles.moreButtonText}>리뷰 작성하기</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </GradientScreenWrapper>
   );
@@ -165,6 +175,12 @@ const styles = StyleSheet.create({
   },
   reviewRating: {
     fontSize: 13,
+  },
+  button_contanier: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: "15%",
   },
   moreButton: {
     marginTop: 12,

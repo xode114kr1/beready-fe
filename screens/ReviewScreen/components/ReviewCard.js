@@ -12,7 +12,10 @@ export default function ReviewCard({ review, onEdit, onDelete }) {
       <Text style={styles.content}>"{review.content}"</Text>
       <Text style={styles.rating}>⭐ {review.rating.toFixed(1)}</Text>
       <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.editBtn} onPress={() => onEdit(review)}>
+        <TouchableOpacity
+          style={styles.editBtn}
+          onPress={() => onEdit(review.id)}
+        >
           <Text style={styles.btnText}>수정</Text>
         </TouchableOpacity>
         <TouchableOpacity
