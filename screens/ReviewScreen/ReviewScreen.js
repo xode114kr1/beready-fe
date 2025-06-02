@@ -31,8 +31,8 @@ export default function ReviewScreen() {
   const menuByCategory = {
     전체: [],
     한식: ["제육볶음", "비빔밥"],
-    분식: ["등심돈까스", "김밥"],
-    퓨전: ["짜장면", "스파게티"],
+    분식: ["등심돈까스", "김밥", "치킨마요덮밥"],
+    일품: ["짜장면", "스파게티"],
   };
 
   const menuOptions =
