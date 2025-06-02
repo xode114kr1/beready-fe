@@ -14,7 +14,6 @@ export default function ReviewFormScreen() {
   const { reviewId, menu: menuParam } = route.params || {};
 
   const isEdit = !!reviewId;
-  console.log(reviewId);
 
   const [menu, setMenu] = useState("");
   const [rating, setRating] = useState(5);
