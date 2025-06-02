@@ -65,12 +65,12 @@ export default function MenuDetailScreen({ route }) {
             {menu.price.toLocaleString()}원
           </Text>
           <Text style={styles.description}>
-            <Text style={{ fontWeight: "bold" }}>설명 : </Text>달콤한 양념이
-            조화를 이루는 인기 메뉴입니다
+            <Text style={{ fontWeight: "bold" }}>설명 : </Text>
+            {menu.description}
           </Text>
           <Text style={styles.rating}>
             <Text style={{ fontWeight: "bold" }}>평점 : </Text>
-            {renderStars(4.2)} (4.2)
+            {renderStars(menu.rating)} {menu.rating}
           </Text>
         </View>
 
