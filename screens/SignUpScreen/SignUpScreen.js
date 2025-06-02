@@ -9,13 +9,26 @@ import {
 } from "react-native";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 import Checkbox from "expo-checkbox";
+import { useDispatch } from "react-redux";
+import { register } from "../../features/user/userSlice";
+import { useNavigation } from "@react-navigation/native";
 
 export default function SignUpScreen({ navigation }) {
-  const [username, setUsername] = useState("");
+  const dispatch = useDispatch();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [agree, setAgree] = useState(false);
+
+  const handleRegister = async () => {
+    try {
+      await dispatch(register({ name, password, email })).unwrap();
+      navigation.goBack();
+    } catch (err) {
+      console.log("회원가입 실패:", err);
+    }
+  };
 
   return (
     <GradientScreenWrapper>
@@ -23,8 +36,8 @@ export default function SignUpScreen({ navigation }) {
         <TextInput
           style={styles.input}
           placeholder="아이디(Username)"
-          value={username}
-          onChangeText={setUsername}
+          value={name}
+          onChangeText={setName}
         />
         <TextInput
           style={styles.input}
@@ -57,7 +70,12 @@ export default function SignUpScreen({ navigation }) {
           <Text style={styles.agreeText}>개인정보 수집 및 동의</Text>
         </View>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            handleRegister();
+          }}
+        >
           <Text style={styles.buttonText}>가입하기</Text>
         </TouchableOpacity>
       </View>

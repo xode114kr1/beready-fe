@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import MyPageStack from "./MyPageStack";
 import SignInStack from "./SignInStack";
 import MenuAdminScreen from "../screens/MenuAdminScreen/MenuAdminScreen";
+import MenuAdminStack from "./MenuAdminStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -59,7 +60,7 @@ export default function TabNavigator() {
       {isAdmin && (
         <Tab.Screen
           name="Admin"
-          component={MenuAdminScreen}
+          component={MenuAdminStack}
           options={{
             title: "관리자",
             tabBarIcon: ({ focused, color, size }) => (

@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { login, logout, adminLogin } from "../../features/user/userSlice";
+import { login } from "../../features/user/userSlice";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 
 export default function SignInScreen({ navigation }) {
@@ -21,7 +21,7 @@ export default function SignInScreen({ navigation }) {
       <View style={styles.container}>
         {/* TODO : 로고 넣기 */}
         <TextInput
-          placeholder="아이디"
+          placeholder="이메일"
           style={styles.input}
           value={userId}
           onChangeText={setUserId}
@@ -36,7 +36,7 @@ export default function SignInScreen({ navigation }) {
 
         <TouchableOpacity
           style={styles.loginButton}
-          onPress={() => dispatch(login())}
+          onPress={() => dispatch(login({ email: userId, password }))}
         >
           <Text style={styles.loginButtonText}>로그인</Text>
         </TouchableOpacity>

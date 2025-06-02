@@ -101,7 +101,9 @@ export default function ReviewScreen() {
     navigation.navigate("ReviewForm", { reviewId: id });
   };
 
-  const handleDelete = (id) => console.log("삭제", id);
+  const handleDelete = (id) => {
+    console.log(id);
+  };
 
   return (
     <GradientScreenWrapper>
