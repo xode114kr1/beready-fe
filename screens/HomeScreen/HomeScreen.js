@@ -26,7 +26,10 @@ export default function HomeScreen() {
         >
           <Text style={styles.buttonText}>예상 대기인원 검색</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Menu")}
+        >
           <Text style={styles.buttonText}>학식당 메뉴 상세</Text>
         </TouchableOpacity>
         {/* 리뷰 박스 */}
