@@ -28,16 +28,6 @@ React Native 기반으로 제작된 학식당 대기 인원 예측 및 식단 �
 # Expo CLI 설치 (최초 1회)
 npm install -g expo-cli
 
-# 프로젝트 생성
-npx create-expo-app myApp --template blank
-
-# 의존성 설치
-npm install
-npx expo install react-native-screens react-native-safe-area-context react-native-gesture-handler react-native-reanimated
-npm install @react-navigation/native @react-navigation/native-stack @react-navigation/bottom-tabs
-npm install @reduxjs/toolkit react-redux axios react-native-tab-view
-npx expo install expo-linear-gradient @expo/vector-icons
-
 # 실행
 npx expo start
 ```
