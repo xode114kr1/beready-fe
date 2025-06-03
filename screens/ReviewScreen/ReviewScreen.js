@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,8 +12,11 @@ import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import ReviewCard from "./components/ReviewCard";
 import Checkbox from "expo-checkbox";
+import { useDispatch, useSelector } from "react-redux";
+import { getReviewList } from "../../features/review/reviewSlice";
 
 export default function ReviewScreen() {
+  const dispatch = useDispatch();
   const { name: initialName, category: initialCategory } = useRoute().params;
   const navigation = useNavigation();
 
@@ -26,6 +29,9 @@ export default function ReviewScreen() {
   const [categoryModalVisible, setCategoryModalVisible] = useState(false);
   const [menuModalVisible, setMenuModalVisible] = useState(false);
 
+  const { reviewList } = useSelector((state) => state.review);
+  const { user } = useSelector((state) => state.user);
+
   const categories = ["전체", "한식", "분식", "퓨전"];
 
   const menuByCategory = {
@@ -37,63 +43,19 @@ export default function ReviewScreen() {
 
   const menuOptions =
     selectedCategory === "전체"
-      ? [].concat(...Object.values(menuByCategory)) // 모든 메뉴
+      ? [].concat(...Object.values(menuByCategory))
       : menuByCategory[selectedCategory] || [];
   const menuList = ["전체", ...menuOptions];
 
-  const allReviews = [
-    {
-      id: 1,
-      menu: "등심돈까스",
-      category: "한식",
-      user: "유저123",
-      isMine: true,
-      content: "돈까스 맛있었어요! 바삭함 굿~",
-      rating: 4.7,
-    },
-    {
-      id: 2,
-      menu: "제육볶음 정식",
-      category: "한식",
-      user: "유저123",
-      isMine: true,
-      content: "제육도 부드럽고 간도 딱 좋아요",
-      rating: 4.3,
-    },
-    {
-      id: 3,
-      menu: "비빔밥",
-      category: "한식",
-      user: "유저456",
-      isMine: false,
-      content: "야채 신선하고 고추장 맛남",
-      rating: 4.0,
-    },
-    {
-      id: 4,
-      menu: "짜장면",
-      category: "퓨전",
-      user: "유저123",
-      isMine: false,
-      content: "달지 않고 맛있어요",
-      rating: 4.1,
-    },
-    {
-      id: 5,
-      menu: "우동",
-      category: "분식",
-      user: "유저999",
-      isMine: true,
-      content: "국물 따뜻하고 면 쫄깃",
-      rating: 4.6,
-    },
-  ];
-
-  const filteredReviews = allReviews.filter((review) => {
-    if (onlyMine && !review.isMine) return false;
-    if (selectedCategory !== "전체" && review.category !== selectedCategory)
+  const filteredReviews = (reviewList || []).filter((review) => {
+    if (onlyMine && !(review?.userId._id == user?._id)) return false;
+    if (
+      selectedCategory !== "전체" &&
+      review.menuId.category !== selectedCategory
+    )
       return false;
-    if (selectedMenu !== "전체" && review.menu !== selectedMenu) return false;
+    if (selectedMenu !== "전체" && review.menuId.name !== selectedMenu)
+      return false;
     return true;
   });
 
@@ -104,6 +66,10 @@ export default function ReviewScreen() {
   const handleDelete = (id) => {
     console.log(id);
   };
+
+  useEffect(() => {
+    dispatch(getReviewList());
+  }, []);
 
   return (
     <GradientScreenWrapper>
@@ -154,7 +120,7 @@ export default function ReviewScreen() {
 
         <FlatList
           data={filteredReviews}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <ReviewCard
               review={item}

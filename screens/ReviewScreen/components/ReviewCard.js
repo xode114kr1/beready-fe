@@ -6,21 +6,21 @@ export default function ReviewCard({ review, onEdit, onDelete }) {
   return (
     <View style={styles.card}>
       <View style={styles.header}>
-        <Text style={styles.menuName}>{review.menu}</Text>
-        <Text style={styles.user}>{review.user}</Text>
+        <Text style={styles.menuName}>{review.menuId?.name}</Text>
+        <Text style={styles.user}>{review.userId?.name}</Text>
       </View>
-      <Text style={styles.content}>"{review.content}"</Text>
+      <Text style={styles.content}>{review.content}</Text>
       <Text style={styles.rating}>⭐ {review.rating.toFixed(1)}</Text>
-      <View style={styles.buttonRow}>
+      <View style={[styles.buttonRow, styles.myReview]}>
         <TouchableOpacity
           style={styles.editBtn}
-          onPress={() => onEdit(review.id)}
+          onPress={() => onEdit(review._id)}
         >
           <Text style={styles.btnText}>수정</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.deleteBtn}
-          onPress={() => onDelete(review.id)}
+          onPress={() => onDelete(review._id)}
         >
           <Text style={styles.btnText}>삭제</Text>
         </TouchableOpacity>
@@ -58,9 +58,13 @@ const styles = StyleSheet.create({
     color: "#F8B400",
   },
   buttonRow: {
+    display: "none",
     flexDirection: "row",
     justifyContent: "flex-end",
     gap: 8,
+  },
+  myReview: {
+    display: "flex",
   },
   editBtn: {
     backgroundColor: "#D6ECFF",
