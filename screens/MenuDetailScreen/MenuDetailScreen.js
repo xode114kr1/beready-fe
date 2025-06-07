@@ -101,9 +101,7 @@ export default function MenuDetailScreen({ route }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.moreButton}
-            onPress={() =>
-              navigation.navigate("ReviewForm", { menu: menu.name })
-            }
+            onPress={() => navigation.navigate("ReviewForm", { menu: menu })}
           >
             <Text style={styles.moreButtonText}>리뷰 작성하기</Text>
           </TouchableOpacity>
