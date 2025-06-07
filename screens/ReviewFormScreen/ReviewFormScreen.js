@@ -30,7 +30,6 @@ export default function ReviewFormScreen() {
   const menuId = menuParam?._id;
 
   useEffect(() => {
-    console.log(menuId);
     if (isEdit) {
       fetchReviewData();
     }
@@ -42,7 +41,19 @@ export default function ReviewFormScreen() {
     });
   }, [isEdit]);
 
-  const fetchReviewData = async () => {};
+  const fetchReviewData = async () => {
+    try {
+      const res = await backApi.get(`/review/${reviewId}`);
+      const review = res.data.data;
+      console.log(review);
+      setMenu(review.menuId.name);
+      setTitle(review.title);
+      setRating(review.rating);
+      setContent(review.content);
+    } catch (error) {
+      console.log("리뷰 불러오기 실패,", error.message);
+    }
+  };
 
   const createReview = async () => {
     try {
