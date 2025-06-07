@@ -73,10 +73,6 @@ export default function MenuScreen() {
     dispatch(getMenu());
   }, []);
 
-  useEffect(() => {
-    console.log("📦 메뉴 상태:", menuList);
-  }, [menuList]);
-
   return (
     <GradientScreenWrapper>
       <ScrollView contentContainerStyle={styles.scrollContainer}>

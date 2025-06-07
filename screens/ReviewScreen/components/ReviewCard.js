@@ -2,7 +2,9 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function ReviewCard({ review, onEdit, onDelete }) {
+export default function ReviewCard({ review, user, onEdit, onDelete }) {
+  const isMine = review.userId._id.toString() === user?._id.toString();
+  console.log(isMine);
   return (
     <View style={styles.card}>
       <View style={styles.header}>
@@ -11,20 +13,22 @@ export default function ReviewCard({ review, onEdit, onDelete }) {
       </View>
       <Text style={styles.content}>{review.content}</Text>
       <Text style={styles.rating}>⭐ {review.rating.toFixed(1)}</Text>
-      <View style={[styles.buttonRow, styles.myReview]}>
-        <TouchableOpacity
-          style={styles.editBtn}
-          onPress={() => onEdit(review._id)}
-        >
-          <Text style={styles.btnText}>수정</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.deleteBtn}
-          onPress={() => onDelete(review._id)}
-        >
-          <Text style={styles.btnText}>삭제</Text>
-        </TouchableOpacity>
-      </View>
+      {isMine && (
+        <View style={styles.buttonRow}>
+          <TouchableOpacity
+            style={styles.editBtn}
+            onPress={() => onEdit(review._id)}
+          >
+            <Text style={styles.btnText}>수정</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.deleteBtn}
+            onPress={() => onDelete(review._id)}
+          >
+            <Text style={styles.btnText}>삭제</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }
@@ -58,7 +62,6 @@ const styles = StyleSheet.create({
     color: "#F8B400",
   },
   buttonRow: {
-    display: "none",
     flexDirection: "row",
     justifyContent: "flex-end",
     gap: 8,

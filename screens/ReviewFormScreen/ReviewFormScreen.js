@@ -19,7 +19,6 @@ export default function ReviewFormScreen() {
   const [rating, setRating] = useState(5);
   const [content, setContent] = useState("");
 
-  // 수정 모드일 경우 API로 데이터 불러오기
   useEffect(() => {
     if (isEdit) {
       fetchReviewData(reviewId);

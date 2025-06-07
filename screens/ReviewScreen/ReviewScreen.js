@@ -124,6 +124,7 @@ export default function ReviewScreen() {
           renderItem={({ item }) => (
             <ReviewCard
               review={item}
+              user={user}
               onEdit={handleEdit}
               onDelete={handleDelete}
             />
