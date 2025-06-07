@@ -4,7 +4,6 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function ReviewCard({ review, user, onEdit, onDelete }) {
   const isMine = review.userId._id.toString() === user?._id.toString();
-  console.log(isMine);
   return (
     <View style={styles.card}>
       <View style={styles.header}>

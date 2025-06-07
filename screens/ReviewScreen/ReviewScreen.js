@@ -95,25 +95,17 @@ export default function ReviewScreen() {
 
           <TouchableOpacity
             onPress={() => setCategoryModalVisible(true)}
-            style={[styles.tag, { width: "20%" }]}
+            style={[styles.tag, { width: "25%" }]}
           >
             <Text style={styles.tagText}>{selectedCategory}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => setMenuModalVisible(true)}
-            style={[styles.tag, { width: "30%" }]}
+            style={[styles.tag, { width: "35%" }]}
           >
             <Text numberOfLines={1} ellipsizeMode="tail" style={styles.tagText}>
               {selectedMenu}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("ReviewForm")}
-            style={[styles.tag, { width: "10%" }]}
-          >
-            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.tagText}>
-              +
             </Text>
           </TouchableOpacity>
         </View>
