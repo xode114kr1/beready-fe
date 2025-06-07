@@ -5,8 +5,13 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
+  ScrollView,
 } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login } from "../../features/user/userSlice";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 
@@ -16,56 +21,67 @@ export default function SignInScreen({ navigation }) {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleLogin = () => {
+    if (!userId || !password) {
+      // TODO: alert 처리 가능
+      return;
+    }
+    dispatch(login({ email: userId, password }));
+  };
+
   return (
     <GradientScreenWrapper>
-      <View style={styles.container}>
-        {/* TODO : 로고 넣기 */}
-        <TextInput
-          placeholder="이메일"
-          style={styles.input}
-          value={userId}
-          onChangeText={setUserId}
-        />
-        <TextInput
-          placeholder="비밀번호"
-          style={styles.input}
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress={() => dispatch(login({ email: userId, password }))}
-        >
-          <Text style={styles.loginButtonText}>로그인</Text>
-        </TouchableOpacity>
-
-        <Text>
-          아직 회원이 아니신가요?{" "}
-          <Text
-            style={styles.signupLink}
-            onPress={() => navigation.navigate("SignUp")}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView
+            contentContainerStyle={styles.container}
+            keyboardShouldPersistTaps="handled"
           >
-            회원가입
-          </Text>
-        </Text>
-      </View>
+            <TextInput
+              placeholder="이메일"
+              style={styles.input}
+              value={userId}
+              onChangeText={setUserId}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+            <TextInput
+              placeholder="비밀번호"
+              style={styles.input}
+              secureTextEntry
+              value={password}
+              onChangeText={setPassword}
+            />
+
+            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+              <Text style={styles.loginButtonText}>로그인</Text>
+            </TouchableOpacity>
+
+            <Text>
+              아직 회원이 아니신가요?{" "}
+              <Text
+                style={styles.signupLink}
+                onPress={() => navigation.navigate("SignUp")}
+              >
+                회원가입
+              </Text>
+            </Text>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </GradientScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: "center",
     paddingHorizontal: "10%",
     alignItems: "center",
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 32,
   },
   input: {
     width: "100%",
@@ -87,11 +103,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
-  },
-  status: {
-    marginTop: 16,
-    fontSize: 14,
-    color: "#444",
   },
   signupLink: {
     marginTop: 12,

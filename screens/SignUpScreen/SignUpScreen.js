@@ -6,12 +6,15 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ScrollView,
 } from "react-native";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 import Checkbox from "expo-checkbox";
 import { useDispatch } from "react-redux";
 import { register } from "../../features/user/userSlice";
-import { useNavigation } from "@react-navigation/native";
 
 export default function SignUpScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -22,6 +25,9 @@ export default function SignUpScreen({ navigation }) {
   const [agree, setAgree] = useState(false);
 
   const handleRegister = async () => {
+    if (!agree) return alert("개인정보 수집에 동의해주세요.");
+    if (password !== confirm) return alert("비밀번호가 일치하지 않습니다.");
+
     try {
       await dispatch(register({ name, password, email })).unwrap();
       navigation.goBack();
@@ -32,56 +38,64 @@ export default function SignUpScreen({ navigation }) {
 
   return (
     <GradientScreenWrapper>
-      <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          placeholder="아이디(Username)"
-          value={name}
-          onChangeText={setName}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="이메일"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="비밀번호"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="비밀번호 확인"
-          value={confirm}
-          onChangeText={setConfirm}
-          secureTextEntry
-        />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "position"}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView
+            contentContainerStyle={styles.container}
+            keyboardShouldPersistTaps="handled"
+          >
+            <TextInput
+              style={styles.input}
+              placeholder="아이디(Username)"
+              value={name}
+              onChangeText={setName}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="이메일"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="비밀번호"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="비밀번호 확인"
+              value={confirm}
+              onChangeText={setConfirm}
+              secureTextEntry
+            />
 
-        <View style={styles.agreeContainer}>
-          <Checkbox
-            value={agree}
-            onValueChange={setAgree}
-            color={agree ? "#3399FF" : undefined}
-          />
-          <Text style={styles.agreeText}>개인정보 수집 및 동의</Text>
-        </View>
+            <View style={styles.agreeContainer}>
+              <Checkbox
+                style={styles.checkbox}
+                value={agree}
+                onValueChange={setAgree}
+                color={agree ? "#3399FF" : undefined}
+              />
+              <Text style={styles.agreeText}>개인정보 수집 및 동의</Text>
+            </View>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            handleRegister();
-          }}
-        >
-          <Text style={styles.buttonText}>가입하기</Text>
-        </TouchableOpacity>
-      </View>
+            <TouchableOpacity style={styles.button} onPress={handleRegister}>
+              <Text style={styles.buttonText}>가입하기</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </GradientScreenWrapper>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

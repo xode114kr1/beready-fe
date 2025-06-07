@@ -14,6 +14,7 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { backApi } from "../../utils/api";
+import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 
 export default function ReviewFormScreen() {
   const dispatch = useDispatch();
@@ -90,54 +91,56 @@ export default function ReviewFormScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.avoidingView}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView
-          style={{ flex: 1 }}
-          contentContainerStyle={styles.container}
-          keyboardShouldPersistTaps="handled"
-        >
-          <Text style={styles.label}>메뉴</Text>
-          <Text style={styles.input}>{menu}</Text>
+    <GradientScreenWrapper>
+      <KeyboardAvoidingView
+        style={styles.avoidingView}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView
+            style={{ flex: 1 }}
+            contentContainerStyle={styles.container}
+            keyboardShouldPersistTaps="handled"
+          >
+            <Text style={styles.label}>메뉴</Text>
+            <Text style={styles.input}>{menu}</Text>
 
-          <Text style={styles.label}>평점 (1~5)</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="5"
-            keyboardType="numeric"
-            value={rating.toString()}
-            onChangeText={(text) => setRating(Number(text))}
-          />
+            <Text style={styles.label}>평점 (1~5)</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="5"
+              keyboardType="numeric"
+              value={rating.toString()}
+              onChangeText={(text) => setRating(Number(text))}
+            />
 
-          <Text style={styles.label}>리뷰 제목</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="제목을 입력하세요"
-            value={title}
-            onChangeText={setTitle}
-            multiline
-          />
+            <Text style={styles.label}>리뷰 제목</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="제목을 입력하세요"
+              value={title}
+              onChangeText={setTitle}
+              multiline
+            />
 
-          <Text style={styles.label}>리뷰 내용</Text>
-          <TextInput
-            style={styles.textarea}
-            placeholder="리뷰를 입력하세요"
-            value={content}
-            onChangeText={setContent}
-            multiline
-          />
+            <Text style={styles.label}>리뷰 내용</Text>
+            <TextInput
+              style={styles.textarea}
+              placeholder="리뷰를 입력하세요"
+              value={content}
+              onChangeText={setContent}
+              multiline
+            />
 
-          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>
-              {isEdit ? "수정 완료" : "리뷰 작성"}
-            </Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+              <Text style={styles.buttonText}>
+                {isEdit ? "수정 완료" : "리뷰 작성"}
+              </Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </GradientScreenWrapper>
   );
 }
 
@@ -149,7 +152,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: "5%",
-    backgroundColor: "#F8FAFC",
   },
   title: {
     fontSize: 20,
