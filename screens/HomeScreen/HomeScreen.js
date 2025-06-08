@@ -3,21 +3,40 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import colors from "../../styles/colors";
 import { useNavigation } from "@react-navigation/native";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
+import { useEffect, useState } from "react";
+import { backApi } from "../../utils/api";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
+
+  const [randomMenu, setRandomMenu] = useState(null);
+  const fetchRandomMenu = async () => {
+    try {
+      const res = await backApi.get("/menu/random");
+      setRandomMenu(res.data.data);
+      console.log(res.data.data);
+    } catch (error) {
+      console.log("fetchRandomMenu error : ", error.message);
+    }
+  };
+  useEffect(() => {
+    fetchRandomMenu();
+  }, []);
+
   return (
     <GradientScreenWrapper>
       <View style={styles.container}>
         <View style={styles.restaurantBox}>
           <Text style={styles.restaurantTitle}>위드센터식당 다래락</Text>
-          <Text style={styles.time}>Open 4시 30분</Text>
+          <Text style={styles.time}>Open4시 30분</Text>
           <Text style={styles.time}>Close 18시 30분</Text>
         </View>
         {/* 추천 메뉴 박스 */}
         <View style={styles.recommendBox}>
           <Text style={styles.recommendTitle}>오늘의 추천 메뉴 📸</Text>
-          <Text style={styles.recommendMenu}>제육볶음 정식 - 6,000원</Text>
+          <Text style={styles.recommendMenu}>
+            {randomMenu?.name} - {randomMenu?.price.toLocaleString()}원
+          </Text>
         </View>
         {/* 버튼들 */}
         <TouchableOpacity
