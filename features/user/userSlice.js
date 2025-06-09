@@ -44,6 +44,7 @@ const userSlice = createSlice({
   },
   reducers: {
     logout(state) {
+      state.user = null;
       state.isLogin = false;
       state.isAdmin = false;
     },
