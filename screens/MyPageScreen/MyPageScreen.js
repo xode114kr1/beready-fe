@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Button, Alert } from "react-native";
 import { useDispatch } from "react-redux";
 import { logout } from "../../features/user/userSlice"; // 경로는 너 프로젝트 구조에 맞게 조정해
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function MyPageScreen() {
   const dispatch = useDispatch();
@@ -14,7 +15,8 @@ export default function MyPageScreen() {
         { text: "취소", style: "cancel" },
         {
           text: "확인",
-          onPress: () => {
+          onPress: async () => {
+            await AsyncStorage.removeItem("token");
             dispatch(logout());
           },
         },

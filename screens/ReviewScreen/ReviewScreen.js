@@ -32,7 +32,7 @@ export default function ReviewScreen() {
   const { reviewList } = useSelector((state) => state.review);
   const { user } = useSelector((state) => state.user);
 
-  const categories = ["전체", "한식", "분식", "퓨전"];
+  const categories = ["전체", "한식", "분식", "일품"];
 
   const menuByCategory = {
     전체: [],
