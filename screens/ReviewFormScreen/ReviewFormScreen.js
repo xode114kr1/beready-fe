@@ -46,7 +46,6 @@ export default function ReviewFormScreen() {
     try {
       const res = await backApi.get(`/review/${reviewId}`);
       const review = res.data.data;
-      console.log(review);
       setMenu(review.menuId.name);
       setTitle(review.title);
       setRating(review.rating);

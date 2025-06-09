@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,9 +14,12 @@ import ReviewCard from "./components/ReviewCard";
 import Checkbox from "expo-checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { getReviewList } from "../../features/review/reviewSlice";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function ReviewScreen() {
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+
   const { name: initialName, category: initialCategory } = useRoute().params;
   const navigation = useNavigation();
 
@@ -68,9 +71,10 @@ export default function ReviewScreen() {
   };
 
   useEffect(() => {
-    dispatch(getReviewList());
-  }, []);
-
+    if (isFocused) {
+      dispatch(getReviewList());
+    }
+  }, [isFocused, dispatch]);
   return (
     <GradientScreenWrapper>
       <View style={styles.container}>

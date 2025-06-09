@@ -2,7 +2,7 @@ import { View, StyleSheet } from "react-native";
 import MenuCard from "./components/MenuCard";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 import { ScrollView } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMenu } from "../../features/menu/menuSlice";
@@ -68,10 +68,13 @@ export default function MenuScreen() {
   const dispatch = useDispatch();
   const { menuList } = useSelector((state) => state.menu);
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    dispatch(getMenu());
-  }, []);
+    if (isFocused) {
+      dispatch(getMenu());
+    }
+  }, [isFocused, dispatch]);
 
   return (
     <GradientScreenWrapper>

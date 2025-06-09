@@ -9,18 +9,30 @@ import { backApi } from "../../utils/api";
 export default function HomeScreen() {
   const navigation = useNavigation();
 
+  const [randomReviewOne, setRandomReviewOne] = useState();
+  const [randomReviewTwo, setRandomReviewTwo] = useState();
   const [randomMenu, setRandomMenu] = useState(null);
   const fetchRandomMenu = async () => {
     try {
       const res = await backApi.get("/menu/random");
       setRandomMenu(res.data.data);
-      console.log(res.data.data);
     } catch (error) {
       console.log("fetchRandomMenu error : ", error.message);
     }
   };
+  const fetchRandomReview = async () => {
+    try {
+      const res1 = await backApi.get("/review/random");
+      const res2 = await backApi.get("/review/random");
+      setRandomReviewOne(res1.data.data);
+      setRandomReviewTwo(res2.data.data);
+    } catch (error) {
+      console.log("fetchRandomReview error", error.message);
+    }
+  };
   useEffect(() => {
     fetchRandomMenu();
+    fetchRandomReview();
   }, []);
 
   return (
@@ -51,17 +63,20 @@ export default function HomeScreen() {
         >
           <Text style={styles.buttonText}>학식당 메뉴 상세</Text>
         </TouchableOpacity>
-        {/* 리뷰 박스 */}
         <View style={styles.reviewBox}>
-          <Text style={styles.reviewStar}>⭐️ 동해물돈까스</Text>
+          <Text style={styles.reviewStar}>
+            ⭐️ {randomReviewOne?.menuId.name}
+          </Text>
           <Text style={styles.reviewText}>
-            "돈까스 잘랐더니 바삭한 곳" - 유저123
+            "{randomReviewOne?.content}" - {randomReviewOne?.userId.name}
           </Text>
         </View>
         <View style={styles.reviewBox}>
-          <Text style={styles.reviewStar}>⭐️ 동해물돈까스</Text>
+          <Text style={styles.reviewStar}>
+            ⭐️ {randomReviewTwo?.menuId.name}
+          </Text>
           <Text style={styles.reviewText}>
-            "돈까스 잘랐더니 바삭한 곳" - 유저123
+            "{randomReviewTwo?.content}" - {randomReviewTwo?.userId.name}
           </Text>
         </View>
       </View>
