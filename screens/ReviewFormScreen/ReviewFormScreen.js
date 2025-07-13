@@ -12,14 +12,14 @@ import {
   ScrollView,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useDispatch } from "react-redux";
 import { backApi } from "../../utils/api";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
+import { useSelector } from "react-redux";
 
 export default function ReviewFormScreen() {
-  const dispatch = useDispatch();
   const navigation = useNavigation();
   const route = useRoute();
+  const { isLogin } = useSelector((state) => state.user);
   const { reviewId, menu: menuParam } = route.params || {};
 
   const isEdit = !!reviewId;
@@ -35,6 +35,15 @@ export default function ReviewFormScreen() {
       fetchReviewData();
     }
   }, []);
+
+  useEffect(() => {
+    if (!isLogin) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Profile", state: { routes: [{ name: "SignIn" }] } }],
+      });
+    }
+  }, [isLogin]);
 
   useEffect(() => {
     navigation.setOptions({

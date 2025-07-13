@@ -12,17 +12,19 @@ import {
   Keyboard,
 } from "react-native";
 import MenuItem from "./components/MenuItem";
+import MenuCreateModal from "./components/MenuCreateModal";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 
 export default function MenuAdminScreen() {
   const [search, setSearch] = useState("");
-  const [menuCount, setMenuCount] = useState(30);
+  const [menuCount, setMenuCount] = useState(3);
   const [menus, setMenus] = useState([
     { id: "1", name: "두루치기 정식", price: 5500, status: "상시" },
     { id: "2", name: "등심돈까스", price: 5500, status: "상시" },
     { id: "3", name: "짜계치", price: 4000, status: "대기" },
   ]);
   const [selectedIds, setSelectedIds] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const toggleSelect = (id) => {
     setSelectedIds((prev) =>
@@ -33,6 +35,12 @@ export default function MenuAdminScreen() {
   const deleteSelected = () => {
     setMenus((prev) => prev.filter((menu) => !selectedIds.includes(menu.id)));
     setSelectedIds([]);
+    setMenuCount((prev) => prev - selectedIds.length);
+  };
+
+  const handleCreate = (newMenu) => {
+    setMenus((prev) => [...prev, newMenu]);
+    setMenuCount((prev) => prev + 1);
   };
 
   return (
@@ -63,7 +71,10 @@ export default function MenuAdminScreen() {
             <View style={styles.buttonContanier}>
               <Text style={styles.textInfo}>Total : {menuCount}</Text>
               <View style={styles.buttonRow}>
-                <TouchableOpacity style={styles.createButton}>
+                <TouchableOpacity
+                  style={styles.createButton}
+                  onPress={() => setIsModalVisible(true)}
+                >
                   <Text style={styles.buttonText}>생성</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -88,6 +99,12 @@ export default function MenuAdminScreen() {
           </ScrollView>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
+
+      <MenuCreateModal
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        onCreate={handleCreate}
+      />
     </GradientScreenWrapper>
   );
 }

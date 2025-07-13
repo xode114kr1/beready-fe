@@ -10,8 +10,12 @@ export default function ReviewCard({ review, user, onEdit, onDelete }) {
         <Text style={styles.menuName}>{review.menuId?.name}</Text>
         <Text style={styles.user}>{review.userId?.name}</Text>
       </View>
-      <Text style={styles.content}>{review.content}</Text>
-      <Text style={styles.rating}>⭐ {review.rating.toFixed(1)}</Text>
+      <View style={styles.textView}>
+        <Text style={styles.title}>{review.title}</Text>
+        <Text style={styles.content}>{review.content}</Text>
+        <Text style={styles.rating}>⭐ {review.rating.toFixed(1)}</Text>
+      </View>
+
       {isMine && (
         <View style={styles.buttonRow}>
           <TouchableOpacity
@@ -51,6 +55,14 @@ const styles = StyleSheet.create({
   },
   user: {
     color: "#666",
+  },
+  textView: {
+    paddingLeft: 10,
+  },
+  title: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginTop: 10,
   },
   content: {
     marginVertical: 8,
