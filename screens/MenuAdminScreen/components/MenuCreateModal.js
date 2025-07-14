@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   View,
@@ -16,9 +16,9 @@ import axios from "axios";
 
 export default function MenuCreateModal({ visible, onClose, onCreate }) {
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("일품");
+  const [category, setCategory] = useState("분식");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(0);
 
   const handleSubmit = async () => {
     if (!name || !category || !description || !price) {
@@ -33,6 +33,15 @@ export default function MenuCreateModal({ visible, onClose, onCreate }) {
   };
 
   const categoryOptions = ["분식", "양식", "일품"];
+
+  useEffect(() => {
+    if (!visible) {
+      setName("");
+      setCategory("분식");
+      setDescription("");
+      setPrice(0);
+    }
+  }, [visible]);
 
   return (
     <Modal visible={visible} transparent animationType="slide">

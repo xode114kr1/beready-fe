@@ -20,10 +20,11 @@ import { backApi } from "../../utils/api";
 
 export default function MenuAdminScreen() {
   const dispatch = useDispatch();
-  const { menuList, isLoading, error } = useSelector((state) => state.menu);
+  const { menuList, menuCount, isLoading, error } = useSelector(
+    (state) => state.menu
+  );
 
   const [search, setSearch] = useState("");
-  const [menuCount, setMenuCount] = useState(3);
   const [selectedIds, setSelectedIds] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 

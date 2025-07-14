@@ -17,6 +17,7 @@ const menuSlice = createSlice({
   name: "menu",
   initialState: {
     menuList: null,
+    menuCount: 0,
     isLoading: false,
     error: "",
   },
@@ -29,6 +30,7 @@ const menuSlice = createSlice({
         state.isLoading = false;
         state.error = "";
         state.menuList = action.payload;
+        state.menuCount = action.payload.length;
       })
       .addCase(getMenu.rejected, (state, action) => {
         state.isLoading = false;
