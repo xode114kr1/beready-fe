@@ -7,88 +7,109 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
 } from "react-native";
-import axios from "axios"; // 또는 backApi 사용 가능
+import axios from "axios";
 
-export default function MenuCreateModal({ visible, onClose }) {
+export default function MenuCreateModal({ visible, onClose, onCreate }) {
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("일품");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
 
   const handleSubmit = async () => {
-    if (!name || !price || !category) {
-      Alert.alert("필수 항목을 모두 입력해주세요.");
+    if (!name || !category || !description || !price) {
+      console.error("폼을 다시 입력");
       return;
     }
-
     try {
-      const res = await axios.post("http://YOUR_BACKEND_URL/api/menu", {
-        name,
-        category,
-        description,
-        price: parseInt(price),
-      });
-
-      if (res.data.status === "success") {
-        Alert.alert("메뉴가 추가되었습니다.");
-        setName("");
-        setCategory("");
-        setDescription("");
-        setPrice("");
-        onClose();
-      } else {
-        throw new Error("메뉴 추가 실패");
-      }
+      onCreate({ name, category, description, price: Number(price) });
     } catch (error) {
-      Alert.alert("에러", error.message);
+      console.error("메뉴 생성 실패 : ", error);
     }
   };
 
+  const categoryOptions = ["분식", "양식", "일품"];
+
   return (
     <Modal visible={visible} transparent animationType="slide">
-      <View style={styles.overlay}>
-        <View style={styles.container}>
-          <Text style={styles.title}>메뉴 추가</Text>
-          <TextInput
-            placeholder="메뉴 이름"
-            value={name}
-            onChangeText={setName}
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="카테고리 (예: 분식)"
-            value={category}
-            onChangeText={setCategory}
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="설명"
-            value={description}
-            onChangeText={setDescription}
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="가격"
-            value={price}
-            onChangeText={setPrice}
-            keyboardType="numeric"
-            style={styles.input}
-          />
-          <TouchableOpacity style={styles.addButton} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>추가</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={onClose}
-            style={[
-              styles.addButton,
-              { backgroundColor: "#aaa", marginTop: 8 },
-            ]}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.overlay}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.avoiding}
           >
-            <Text style={styles.buttonText}>취소</Text>
-          </TouchableOpacity>
+            <View style={styles.container}>
+              <Text style={styles.title}>메뉴 추가</Text>
+
+              <TextInput
+                placeholder="메뉴 이름"
+                placeholderTextColor="#666"
+                value={name}
+                onChangeText={setName}
+                style={styles.input}
+              />
+
+              <Text style={styles.label}>카테고리</Text>
+              <View style={styles.categoryRow}>
+                {categoryOptions.map((option) => (
+                  <TouchableOpacity
+                    key={option}
+                    style={[
+                      styles.categoryButton,
+                      category === option && styles.categoryButtonSelected,
+                    ]}
+                    onPress={() => setCategory(option)}
+                  >
+                    <Text
+                      style={[
+                        styles.categoryText,
+                        category === option && styles.categoryTextSelected,
+                      ]}
+                    >
+                      {option}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+
+              <TextInput
+                placeholder="설명"
+                placeholderTextColor="#666"
+                value={description}
+                onChangeText={setDescription}
+                multiline
+                numberOfLines={3}
+                style={[styles.input, styles.descriptionInput]}
+              />
+              <TextInput
+                placeholder="가격"
+                placeholderTextColor="#666"
+                value={price}
+                onChangeText={setPrice}
+                keyboardType="numeric"
+                style={styles.input}
+              />
+
+              <TouchableOpacity style={styles.addButton} onPress={handleSubmit}>
+                <Text style={styles.buttonText}>추가</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={onClose}
+                style={[
+                  styles.addButton,
+                  { backgroundColor: "#aaa", marginTop: 8 },
+                ]}
+              >
+                <Text style={styles.buttonText}>취소</Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 }
@@ -99,34 +120,78 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.4)",
     justifyContent: "center",
     alignItems: "center",
+    padding: 20,
+  },
+  avoiding: {
+    width: "100%",
   },
   container: {
-    width: "85%",
     backgroundColor: "#fff",
+    borderRadius: 12,
     padding: 20,
-    borderRadius: 8,
+    width: "100%",
+    elevation: 5,
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 12,
+    marginBottom: 20,
     textAlign: "center",
+  },
+  label: {
+    fontWeight: "600",
+    marginBottom: 6,
+    color: "#333",
+    marginTop: 6,
   },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 6,
-    padding: 10,
+    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
     marginBottom: 12,
+    fontSize: 15,
+  },
+  descriptionInput: {
+    height: 80,
+    textAlignVertical: "top",
+  },
+  categoryRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 12,
+  },
+  categoryButton: {
+    flex: 1,
+    marginHorizontal: 4,
+    borderWidth: 1,
+    borderColor: "#aaa",
+    borderRadius: 6,
+    paddingVertical: 10,
+    alignItems: "center",
+  },
+  categoryButtonSelected: {
+    backgroundColor: "#3399FF",
+    borderColor: "#3399FF",
+  },
+  categoryText: {
+    color: "#555",
+    fontWeight: "500",
+  },
+  categoryTextSelected: {
+    color: "#fff",
+    fontWeight: "bold",
   },
   addButton: {
     backgroundColor: "#3399FF",
     paddingVertical: 12,
-    borderRadius: 6,
+    borderRadius: 8,
     alignItems: "center",
   },
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
+    fontSize: 15,
   },
 });

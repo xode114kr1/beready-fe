@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,15 +14,16 @@ import {
 import MenuItem from "./components/MenuItem";
 import MenuCreateModal from "./components/MenuCreateModal";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
+import { useDispatch, useSelector } from "react-redux";
+import { getMenu } from "../../features/menu/menuSlice";
+import { backApi } from "../../utils/api";
 
 export default function MenuAdminScreen() {
+  const dispatch = useDispatch();
+  const { menuList, isLoading, error } = useSelector((state) => state.menu);
+
   const [search, setSearch] = useState("");
   const [menuCount, setMenuCount] = useState(3);
-  const [menus, setMenus] = useState([
-    { id: "1", name: "두루치기 정식", price: 5500, status: "상시" },
-    { id: "2", name: "등심돈까스", price: 5500, status: "상시" },
-    { id: "3", name: "짜계치", price: 4000, status: "대기" },
-  ]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -32,16 +33,21 @@ export default function MenuAdminScreen() {
     );
   };
 
-  const deleteSelected = () => {
-    setMenus((prev) => prev.filter((menu) => !selectedIds.includes(menu.id)));
-    setSelectedIds([]);
-    setMenuCount((prev) => prev - selectedIds.length);
+  const deleteSelected = () => {};
+
+  const handleCreate = async (newMenu) => {
+    try {
+      const res = await backApi.post("/menu", newMenu);
+      dispatch(getMenu());
+      setIsModalVisible(false);
+    } catch (error) {
+      console.error("메뉴 생성 오류 : ", error);
+    }
   };
 
-  const handleCreate = (newMenu) => {
-    setMenus((prev) => [...prev, newMenu]);
-    setMenuCount((prev) => prev + 1);
-  };
+  useEffect(() => {
+    dispatch(getMenu());
+  }, [dispatch]);
 
   return (
     <GradientScreenWrapper>
@@ -87,12 +93,12 @@ export default function MenuAdminScreen() {
             </View>
 
             <View style={styles.listWrapper}>
-              {menus.map((menu) => (
+              {(menuList || []).map((menu) => (
                 <MenuItem
-                  key={menu.id}
+                  key={menu._id}
                   menu={menu}
-                  isSelected={selectedIds.includes(menu.id)}
-                  onToggleSelect={() => toggleSelect(menu.id)}
+                  isSelected={selectedIds.includes(menu._id)}
+                  onToggleSelect={() => toggleSelect(menu._id)}
                 />
               ))}
             </View>

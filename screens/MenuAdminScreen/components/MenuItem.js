@@ -6,8 +6,11 @@ export default function MenuItem({ menu, isSelected, onToggleSelect }) {
   return (
     <View style={styles.itemRow}>
       <Checkbox value={isSelected} onValueChange={onToggleSelect} />
-      <Text style={styles.cell}>{menu.name}</Text>
-      <Text style={styles.cell}>{menu.price.toLocaleString()}원</Text>
+      <Text style={[styles.cell, { flex: 2 }]}>{menu.name}</Text>
+      <Text style={[styles.cell, { flex: 1 }]}>
+        {menu.price.toLocaleString()}원
+      </Text>
+      <Text style={[styles.cell, { flex: 1 }]}>{menu.category}</Text>
       <TouchableOpacity
         style={[
           styles.statusButton,
