@@ -34,7 +34,14 @@ export default function MenuAdminScreen() {
     );
   };
 
-  const deleteSelected = () => {};
+  const deleteSelected = async () => {
+    try {
+      const res = await backApi.delete("/menu", { data: { ids: selectedIds } });
+      dispatch(getMenu());
+    } catch (error) {
+      console.error("메뉴 삭제 오류 : ", error);
+    }
+  };
 
   const handleCreate = async (newMenu) => {
     try {
