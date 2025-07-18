@@ -1,5 +1,5 @@
 // screens/HomeScreen/HomeScreen.js
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import colors from "../../styles/colors";
 import { useNavigation } from "@react-navigation/native";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
@@ -38,6 +38,13 @@ export default function HomeScreen() {
   return (
     <GradientScreenWrapper>
       <View style={styles.container}>
+        <View style={styles.imageBox}>
+          <Image
+            source={require("../../assets/Logo.png")}
+            style={styles.logoImage}
+          />
+          <Text style={styles.logoText}>Beready</Text>
+        </View>
         <View style={styles.restaurantBox}>
           <Text style={styles.restaurantTitle}>위드센터식당 다래락</Text>
           <Text style={styles.time}>Open4시 30분</Text>
@@ -90,6 +97,20 @@ const styles = StyleSheet.create({
     padding: 16,
     gap: 16,
     justifyContent: "center",
+  },
+  imageBox: {
+    flexDirection: "row",
+    gap: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logoImage: {
+    width: 50,
+    height: 50,
+    resizeMode: "contain",
+  },
+  logoText: {
+    fontSize: 17,
   },
   restaurantBox: {
     backgroundColor: "#eee",

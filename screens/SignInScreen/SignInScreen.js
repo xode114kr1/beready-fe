@@ -10,6 +10,7 @@ import {
   Keyboard,
   Platform,
   ScrollView,
+  Image,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/user/userSlice";
@@ -40,6 +41,13 @@ export default function SignInScreen({ navigation }) {
             contentContainerStyle={styles.container}
             keyboardShouldPersistTaps="handled"
           >
+            <View style={styles.imageBox}>
+              <Image
+                source={require("../../assets/Logo.png")}
+                style={styles.logoImage}
+              />
+              <Text style={styles.logoText}>Beready</Text>
+            </View>
             <TextInput
               placeholder="이메일"
               style={styles.input}
@@ -82,6 +90,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: "10%",
     alignItems: "center",
+  },
+  imageBox: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  logoImage: {
+    width: 150,
+    height: 150,
+    resizeMode: "cover",
+  },
+  logoText: {
+    fontSize: 25,
   },
   input: {
     width: "100%",
