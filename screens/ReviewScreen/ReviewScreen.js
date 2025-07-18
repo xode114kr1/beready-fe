@@ -33,16 +33,8 @@ export default function ReviewScreen() {
   const [menuModalVisible, setMenuModalVisible] = useState(false);
 
   const { reviewList } = useSelector((state) => state.review);
+  const { categoryList, menuByCategory } = useSelector((state) => state.menu);
   const { user } = useSelector((state) => state.user);
-
-  const categories = ["전체", "한식", "분식", "일품"];
-
-  const menuByCategory = {
-    전체: [],
-    한식: ["제육볶음", "비빔밥"],
-    분식: ["등심돈까스", "김밥", "치킨마요덮밥"],
-    일품: ["짜장면", "스파게티"],
-  };
 
   const menuOptions =
     selectedCategory === "전체"
@@ -134,7 +126,7 @@ export default function ReviewScreen() {
             onPress={() => setCategoryModalVisible(false)}
           >
             <View style={styles.modal}>
-              {categories.map((cat) => (
+              {categoryList.map((cat) => (
                 <TouchableOpacity
                   key={cat}
                   onPress={() => {
