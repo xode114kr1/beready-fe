@@ -10,6 +10,8 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  Modal,
+  Pressable,
 } from "react-native";
 import MenuItem from "./components/MenuItem";
 import MenuCreateModal from "./components/MenuCreateModal";
@@ -20,13 +22,17 @@ import { backApi } from "../../utils/api";
 
 export default function MenuAdminScreen() {
   const dispatch = useDispatch();
-  const { menuList, menuCount, isLoading, error } = useSelector(
+  const { menuList, menuCount, isLoading, error, categoryList } = useSelector(
     (state) => state.menu
   );
+  const [filteredMenuList, setFilteredMenuList] = useState([]);
+  const [filteredMenuCount, setFilteredMenuCount] = useState([]);
 
+  const [categoryModalVisible, setCategoryModalVisible] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedIds, setSelectedIds] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("전체");
 
   const toggleSelect = (id) => {
     setSelectedIds((prev) =>
@@ -57,6 +63,16 @@ export default function MenuAdminScreen() {
     dispatch(getMenu());
   }, [dispatch]);
 
+  useEffect(() => {
+    const updatedMenuList =
+      selectedCategory === "전체"
+        ? menuList
+        : menuList.filter((menu) => menu.category === selectedCategory);
+
+    setFilteredMenuList(updatedMenuList);
+    setFilteredMenuCount(updatedMenuList ? updatedMenuList.length : 0);
+  }, [menuList, selectedCategory]);
+
   return (
     <GradientScreenWrapper>
       <KeyboardAvoidingView
@@ -69,8 +85,11 @@ export default function MenuAdminScreen() {
             keyboardShouldPersistTaps="handled"
           >
             <View style={styles.searchRow}>
-              <TouchableOpacity style={styles.dropdown}>
-                <Text>한식 ▾</Text>
+              <TouchableOpacity
+                style={styles.dropdown}
+                onPress={() => setCategoryModalVisible(true)}
+              >
+                <Text>{selectedCategory}</Text>
               </TouchableOpacity>
               <TextInput
                 placeholder="메뉴 검색"
@@ -83,7 +102,7 @@ export default function MenuAdminScreen() {
               </TouchableOpacity>
             </View>
             <View style={styles.buttonContanier}>
-              <Text style={styles.textInfo}>Total : {menuCount}</Text>
+              <Text style={styles.textInfo}>Total : {filteredMenuCount}</Text>
               <View style={styles.buttonRow}>
                 <TouchableOpacity
                   style={styles.createButton}
@@ -101,7 +120,7 @@ export default function MenuAdminScreen() {
             </View>
 
             <View style={styles.listWrapper}>
-              {(menuList || []).map((menu) => (
+              {(filteredMenuList || []).map((menu) => (
                 <MenuItem
                   key={menu._id}
                   menu={menu}
@@ -119,6 +138,27 @@ export default function MenuAdminScreen() {
         onClose={() => setIsModalVisible(false)}
         onCreate={handleCreate}
       />
+      <Modal transparent visible={categoryModalVisible} animationType="fade">
+        <Pressable
+          style={styles.modalOverlay}
+          onPress={() => setCategoryModalVisible(false)}
+        >
+          <View style={styles.modal}>
+            {categoryList.map((m) => (
+              <TouchableOpacity
+                key={m}
+                onPress={() => {
+                  setSelectedCategory(m);
+                  setCategoryModalVisible(false);
+                }}
+                style={styles.modalItem}
+              >
+                <Text>{m}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </Pressable>
+      </Modal>
     </GradientScreenWrapper>
   );
 }
@@ -187,5 +227,20 @@ const styles = StyleSheet.create({
   buttonText: { color: "#fff", fontWeight: "bold" },
   listWrapper: {
     paddingBottom: 40,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.3)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modal: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 16,
+    width: 240,
+  },
+  modalItem: {
+    paddingVertical: 10,
   },
 });
