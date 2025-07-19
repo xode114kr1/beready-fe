@@ -59,19 +59,26 @@ export default function MenuAdminScreen() {
     }
   };
 
+  // const handleSearchMenu = () => {
+  //   const updatedMenu = menuList.filter((menu) => menu.name.includes(search));
+  //   setFilteredMenuList(updatedMenu);
+  // };
+
   useEffect(() => {
     dispatch(getMenu());
   }, [dispatch]);
 
   useEffect(() => {
-    const updatedMenuList =
+    let updatedMenuList =
       selectedCategory === "전체"
         ? menuList
         : menuList.filter((menu) => menu.category === selectedCategory);
-
+    updatedMenuList = updatedMenuList.filter((menu) =>
+      menu.name.includes(search)
+    );
     setFilteredMenuList(updatedMenuList);
     setFilteredMenuCount(updatedMenuList ? updatedMenuList.length : 0);
-  }, [menuList, selectedCategory]);
+  }, [menuList, selectedCategory, search]);
 
   return (
     <GradientScreenWrapper>
@@ -97,9 +104,12 @@ export default function MenuAdminScreen() {
                 onChangeText={setSearch}
                 style={styles.searchInput}
               />
-              <TouchableOpacity style={styles.searchButton}>
+              {/* <TouchableOpacity
+                style={styles.searchButton}
+                onPress={handleSearchMenu}
+              >
                 <Text>🔍</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             <View style={styles.buttonContanier}>
               <Text style={styles.textInfo}>Total : {filteredMenuCount}</Text>
