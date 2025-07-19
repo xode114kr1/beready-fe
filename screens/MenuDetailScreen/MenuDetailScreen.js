@@ -46,8 +46,7 @@ export default function MenuDetailScreen({ route }) {
     return (
       <>
         {"★".repeat(fullStars)}
-        {halfStar && "½"}
-        {"☆".repeat(5 - fullStars - (halfStar ? 1 : 0))}
+        {halfStar && "☆"}
       </>
     );
   };
@@ -70,7 +69,7 @@ export default function MenuDetailScreen({ route }) {
           </Text>
           <Text style={styles.rating}>
             <Text style={{ fontWeight: "bold" }}>평점 : </Text>
-            {renderStars(menu.rating)} {menu.rating}
+            {renderStars(menu.rating)} {menu.rating.toFixed(1)}
           </Text>
         </View>
 
