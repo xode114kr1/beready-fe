@@ -92,7 +92,7 @@ export default function MenuDetailScreen({ route }) {
           </Text>
         </View>
 
-        <Text style={styles.reviewTitle}>📝 대표 리뷰</Text>
+        <Text style={styles.reviewTitle}>대표 리뷰</Text>
 
         {reviews.map((review) => (
           <View key={review.id} style={styles.reviewBox}>
@@ -101,7 +101,7 @@ export default function MenuDetailScreen({ route }) {
             </Text>
             <Text style={styles.reviewContent}>{review.content}</Text>
             <Text style={styles.reviewRating}>
-              ⭐ {renderStars(review.rating)}
+              {renderStars(review.rating)} {menu.rating.toFixed(1)}
             </Text>
           </View>
         ))}

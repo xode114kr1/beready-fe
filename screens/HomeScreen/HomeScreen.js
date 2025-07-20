@@ -52,7 +52,7 @@ export default function HomeScreen() {
         </View>
         {/* 추천 메뉴 박스 */}
         <View style={styles.recommendBox}>
-          <Text style={styles.recommendTitle}>오늘의 추천 메뉴 📸</Text>
+          <Text style={styles.recommendTitle}>오늘의 추천 메뉴</Text>
           <Text style={styles.recommendMenu}>
             {randomMenu?.name} - {randomMenu?.price.toLocaleString()}원
           </Text>
@@ -71,17 +71,13 @@ export default function HomeScreen() {
           <Text style={styles.buttonText}>학식당 메뉴 상세</Text>
         </TouchableOpacity>
         <View style={styles.reviewBox}>
-          <Text style={styles.reviewStar}>
-            ⭐️ {randomReviewOne?.menuId.name}
-          </Text>
+          <Text style={styles.reviewStar}>{randomReviewOne?.menuId.name}</Text>
           <Text style={styles.reviewText}>
             "{randomReviewOne?.content}" - {randomReviewOne?.userId.name}
           </Text>
         </View>
         <View style={styles.reviewBox}>
-          <Text style={styles.reviewStar}>
-            ⭐️ {randomReviewTwo?.menuId.name}
-          </Text>
+          <Text style={styles.reviewStar}>{randomReviewTwo?.menuId.name}</Text>
           <Text style={styles.reviewText}>
             "{randomReviewTwo?.content}" - {randomReviewTwo?.userId.name}
           </Text>
