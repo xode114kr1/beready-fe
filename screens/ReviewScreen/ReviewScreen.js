@@ -15,6 +15,7 @@ import Checkbox from "expo-checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { getReviewList } from "../../features/review/reviewSlice";
 import { useIsFocused } from "@react-navigation/native";
+import { backApi } from "../../utils/api";
 
 export default function ReviewScreen() {
   const dispatch = useDispatch();
@@ -58,8 +59,13 @@ export default function ReviewScreen() {
     navigation.navigate("ReviewForm", { reviewId: id });
   };
 
-  const handleDelete = (id) => {
-    console.log(id);
+  const handleDelete = async (id) => {
+    try {
+      const res = await backApi.delete(`/review/${id}`);
+      dispatch(getReviewList());
+    } catch (error) {
+      console.error("리뷰 삭제 실패 : ", error.message);
+    }
   };
 
   useEffect(() => {

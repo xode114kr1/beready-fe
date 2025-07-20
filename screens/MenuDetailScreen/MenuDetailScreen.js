@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -10,11 +10,15 @@ import {
 } from "react-native";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 import colors from "../../styles/colors";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { backApi } from "../../utils/api";
 
 export default function MenuDetailScreen({ route }) {
   const navigation = useNavigation();
-  const { menu } = route.params;
+  const isFocused = useIsFocused();
+
+  const { menu: initialMenu } = route.params;
+  const [menu, setMenu] = useState(initialMenu);
   const navigator = useNavigation();
   const reviews = [
     {
@@ -50,6 +54,21 @@ export default function MenuDetailScreen({ route }) {
       </>
     );
   };
+
+  const fetchMenuData = async () => {
+    try {
+      const res = await backApi.get(`/menu/${initialMenu._id}`);
+      setMenu(res.data.data);
+    } catch (error) {
+      console.error("메뉴 정보 불러오기 실패 ", error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      fetchMenuData();
+    }
+  }, [isFocused]);
 
   return (
     <GradientScreenWrapper>
