@@ -1,6 +1,8 @@
 import axios from "axios";
-import { BACKEND_LOCAL_URL, FASTAPI_LOCAL_URL } from "@env";
+import Constants from "expo-constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const { BACKEND_LOCAL_URL, FASTAPI_LOCAL_URL } = Constants.expoConfig.extra;
 
 export const backApi = axios.create({
   baseURL: BACKEND_LOCAL_URL,
