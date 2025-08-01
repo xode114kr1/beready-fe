@@ -14,31 +14,58 @@ import {
 } from "react-native";
 import axios from "axios";
 
-export default function MenuCreateModal({ visible, onClose, onCreate }) {
+export default function MenuCreateModal({
+  visible,
+  onClose,
+  onCreate,
+  initialData,
+  onEdit,
+}) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("분식");
   const [description, setDescription] = useState("");
+  const [status, setStatus] = useState("상시");
   const [price, setPrice] = useState(0);
+
+  const isEditMode = !!initialData;
+  useEffect(() => {
+    if (visible) {
+      setName(initialData?.name || "");
+      setCategory(initialData?.category || "분식");
+      setDescription(initialData?.description || "");
+      setStatus(initialData?.status || "상시");
+      setPrice(initialData?.price?.toString() || "");
+    }
+  }, [visible, initialData]);
 
   const handleSubmit = async () => {
     if (!name || !category || !description || !price) {
       console.error("폼을 다시 입력");
       return;
     }
-    try {
-      onCreate({ name, category, description, price: Number(price) });
-    } catch (error) {
-      console.error("메뉴 생성 실패 : ", error);
+    const payload = {
+      name,
+      category,
+      description,
+      price: Number(price),
+      status,
+    };
+    if (isEditMode) {
+      onEdit(initialData._id, payload);
+    } else {
+      onCreate(payload);
     }
   };
 
   const categoryOptions = ["분식", "양식", "일품"];
+  const statusOptions = ["상시", "한철", "중단"];
 
   useEffect(() => {
     if (!visible) {
       setName("");
       setCategory("분식");
       setDescription("");
+      setStatus("상시");
       setPrice(0);
     }
   }, [visible]);
@@ -102,9 +129,33 @@ export default function MenuCreateModal({ visible, onClose, onCreate }) {
                 keyboardType="numeric"
                 style={styles.input}
               />
+              <Text style={styles.label}>상태</Text>
+              <View style={styles.categoryRow}>
+                {statusOptions.map((option) => (
+                  <TouchableOpacity
+                    key={option}
+                    style={[
+                      styles.categoryButton,
+                      status === option && styles.categoryButtonSelected,
+                    ]}
+                    onPress={() => setStatus(option)}
+                  >
+                    <Text
+                      style={[
+                        styles.categoryText,
+                        status === option && styles.categoryTextSelected,
+                      ]}
+                    >
+                      {option}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
 
               <TouchableOpacity style={styles.addButton} onPress={handleSubmit}>
-                <Text style={styles.buttonText}>추가</Text>
+                <Text style={styles.buttonText}>
+                  {isEditMode ? "수정" : "추가"}
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={onClose}

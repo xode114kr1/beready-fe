@@ -27,7 +27,7 @@ export default function MenuAdminScreen() {
   );
   const [filteredMenuList, setFilteredMenuList] = useState([]);
   const [filteredMenuCount, setFilteredMenuCount] = useState([]);
-
+  const [editingMenu, setEditingMenu] = useState(null);
   const [categoryModalVisible, setCategoryModalVisible] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedIds, setSelectedIds] = useState([]);
@@ -59,16 +59,29 @@ export default function MenuAdminScreen() {
     }
   };
 
-  // const handleSearchMenu = () => {
-  //   const updatedMenu = menuList.filter((menu) => menu.name.includes(search));
-  //   setFilteredMenuList(updatedMenu);
-  // };
+  const handleEdit = async (id, editMenu) => {
+    try {
+      const res = await backApi.put(`/menu/${id}`, editMenu);
+      dispatch(getMenu());
+      setIsModalVisible(false);
+    } catch (error) {
+      console.error("메뉴 수정 오류 : ", error);
+    }
+  };
+
+  const handleMenuEditModal = (id) => {
+    const selected = menuList.find((m) => m._id === id);
+    if (!selected) return;
+    setEditingMenu(selected);
+    setIsModalVisible(true);
+  };
 
   useEffect(() => {
     dispatch(getMenu());
   }, [dispatch]);
 
   useEffect(() => {
+    if (!menuList) return;
     let updatedMenuList =
       selectedCategory === "전체"
         ? menuList
@@ -104,19 +117,16 @@ export default function MenuAdminScreen() {
                 onChangeText={setSearch}
                 style={styles.searchInput}
               />
-              {/* <TouchableOpacity
-                style={styles.searchButton}
-                onPress={handleSearchMenu}
-              >
-                <Text>🔍</Text>
-              </TouchableOpacity> */}
             </View>
             <View style={styles.buttonContanier}>
               <Text style={styles.textInfo}>Total : {filteredMenuCount}</Text>
               <View style={styles.buttonRow}>
                 <TouchableOpacity
                   style={styles.createButton}
-                  onPress={() => setIsModalVisible(true)}
+                  onPress={() => {
+                    setEditingMenu(null);
+                    setIsModalVisible(true);
+                  }}
                 >
                   <Text style={styles.buttonText}>생성</Text>
                 </TouchableOpacity>
@@ -136,6 +146,7 @@ export default function MenuAdminScreen() {
                   menu={menu}
                   isSelected={selectedIds.includes(menu._id)}
                   onToggleSelect={() => toggleSelect(menu._id)}
+                  handleMenuEditModal={handleMenuEditModal}
                 />
               ))}
             </View>
@@ -145,8 +156,13 @@ export default function MenuAdminScreen() {
 
       <MenuCreateModal
         visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
+        onClose={() => {
+          setIsModalVisible(false);
+          setEditingMenu(null);
+        }}
         onCreate={handleCreate}
+        onEdit={handleEdit}
+        initialData={editingMenu}
       />
       <Modal transparent visible={categoryModalVisible} animationType="fade">
         <Pressable
