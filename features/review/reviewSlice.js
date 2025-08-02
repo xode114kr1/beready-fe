@@ -15,10 +15,25 @@ export const getReviewList = createAsyncThunk(
   }
 );
 
+export const getTopReviewList = createAsyncThunk(
+  "review/getTopReviewById",
+  async (id, { rejectWithValue }) => {
+    try {
+      const res = await backApi.get(`/review/top/${id}`);
+      return res.data.data;
+    } catch (error) {
+      return rejectWithValue(
+        error?.response?.data?.error || "리뷰 불러오기 실패"
+      );
+    }
+  }
+);
+
 export const reviewSlice = createSlice({
   name: "review",
   initialState: {
     reviewList: null,
+    topReviewList: null,
     isLoading: false,
     error: "",
   },
@@ -34,6 +49,17 @@ export const reviewSlice = createSlice({
       })
       .addCase(getReviewList.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(getTopReviewList.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(getTopReviewList.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.topReviewList = action.payload;
+        state.error = "";
+      })
+      .addCase(getTopReviewList.rejected, (state, action) => {
         state.error = action.payload;
       });
   },

@@ -12,37 +12,19 @@ import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 import colors from "../../styles/colors";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { backApi } from "../../utils/api";
+import TopReview from "./components/TopReview";
+import { useDispatch, useSelector } from "react-redux";
+import { getTopReviewList } from "../../features/review/reviewSlice";
 
 export default function MenuDetailScreen({ route }) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-
+  const dispatch = useDispatch();
+  const { topReviewList } = useSelector((state) => state.review);
+  console.log(topReviewList);
   const { menu: initialMenu } = route.params;
   const [menu, setMenu] = useState(initialMenu);
   const navigator = useNavigation();
-  const reviews = [
-    {
-      id: 1,
-      user: "유저123",
-      date: "2025-05-07",
-      content: "제육이 부드럽고 간도 적당해서 너무 맛있었어요!",
-      rating: 4.5,
-    },
-    {
-      id: 2,
-      user: "유저123",
-      date: "2025-05-07",
-      content: "제육이 부드럽고 간도 적당해서 너무 맛있었어요!",
-      rating: 4.5,
-    },
-    {
-      id: 3,
-      user: "유저123",
-      date: "2025-05-07",
-      content: "제육이 부드럽고 간도 적당해서 너무 맛있었어요!",
-      rating: 4.5,
-    },
-  ];
 
   const renderStars = (rating) => {
     const fullStars = Math.floor(rating);
@@ -67,6 +49,7 @@ export default function MenuDetailScreen({ route }) {
   useEffect(() => {
     if (isFocused) {
       fetchMenuData();
+      dispatch(getTopReviewList(menu._id));
     }
   }, [isFocused]);
 
@@ -93,18 +76,17 @@ export default function MenuDetailScreen({ route }) {
         </View>
 
         <Text style={styles.reviewTitle}>대표 리뷰</Text>
-
-        {reviews.map((review) => (
-          <View key={review.id} style={styles.reviewBox}>
-            <Text style={styles.reviewUser}>
-              {review.user} · {review.date}
-            </Text>
-            <Text style={styles.reviewContent}>{review.content}</Text>
-            <Text style={styles.reviewRating}>
-              {renderStars(review.rating)} {menu.rating.toFixed(1)}
+        {topReviewList && topReviewList.length > 0 ? (
+          topReviewList.map((review) => (
+            <TopReview key={review._id} review={review} />
+          ))
+        ) : (
+          <View style={styles.noReviewBox}>
+            <Text style={styles.noReviewText}>
+              아직 리뷰가 없어요. 첫 리뷰를 작성해보세요!
             </Text>
           </View>
-        ))}
+        )}
         <View style={styles.button_contanier}>
           <TouchableOpacity
             style={styles.moreButton}
@@ -210,5 +192,19 @@ const styles = StyleSheet.create({
   moreButtonText: {
     color: "#2471D6",
     fontWeight: "bold",
+  },
+  noReviewBox: {
+    padding: 20,
+    marginVertical: 4,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#ddd",
+  },
+  noReviewText: {
+    fontSize: 14,
+    color: "#999",
   },
 });
