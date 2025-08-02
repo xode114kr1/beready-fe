@@ -1,13 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 import WaitBox from "./components/WaitBox";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getEstimationdalelac,
+  getEstimationLilac,
+} from "../../features/estimation/estimationSlice";
 
 export default function WaitEstimationScreen() {
+  const dispatch = useDispatch();
+  const { time, peopleCount } = useSelector((state) => state.estimation);
+  console.log(time, peopleCount);
   const [theme, setTheme] = useState("라일락");
-  const [selectedCategory, setSelectedCategory] = useState("한식");
+  const [selectedCategory, setSelectedCategory] = useState("일식");
 
   const isDarerak = theme === "다래락";
+  useEffect(() => {
+    dispatch(getEstimationLilac());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (theme == "라일락") {
+      dispatch(getEstimationLilac());
+    } else if (theme == "다래락") {
+      dispatch(getEstimationdalelac(selectedCategory));
+    }
+  }, [theme, selectedCategory]);
 
   return (
     <GradientScreenWrapper>
@@ -47,7 +66,7 @@ export default function WaitEstimationScreen() {
           </TouchableOpacity>
         </View>
 
-        <WaitBox waitTime="04:03" peopleCount={5} theme={theme} />
+        <WaitBox waitTime={time} peopleCount={peopleCount} theme={theme} />
 
         <View
           style={[
