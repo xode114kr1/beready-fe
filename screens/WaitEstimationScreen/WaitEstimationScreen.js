@@ -16,7 +16,7 @@ export default function WaitEstimationScreen() {
           <TouchableOpacity
             style={[
               styles.themeButton,
-              theme === "라일락" && styles.selectedTheme,
+              theme === "라일락" && styles.selectedTheme_lilac,
             ]}
             onPress={() => setTheme("라일락")}
           >
@@ -32,7 +32,7 @@ export default function WaitEstimationScreen() {
           <TouchableOpacity
             style={[
               styles.themeButton,
-              theme === "다래락" && styles.selectedTheme,
+              theme === "다래락" && styles.selectedTheme_dalelac,
             ]}
             onPress={() => setTheme("다래락")}
           >
@@ -98,8 +98,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#EDEDED",
     borderRadius: 20,
   },
-  selectedTheme: {
+  selectedTheme_lilac: {
     backgroundColor: "#3B63C4",
+  },
+  selectedTheme_dalelac: {
+    backgroundColor: "#3bc459ff",
   },
   themeText: {
     color: "#000",

@@ -2,8 +2,12 @@ import { View, StyleSheet, Text } from "react-native";
 import MenuCard from "./components/MenuCard";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 import { ScrollView } from "react-native-gesture-handler";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { useEffect } from "react";
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from "@react-navigation/native";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMenu } from "../../features/menu/menuSlice";
 
@@ -20,14 +24,24 @@ export default function MenuScreen() {
   };
 
   const getMenusByCategory = (category) => {
-    return menuList?.filter((menu) => menu.category === category) || [];
+    return (
+      menuList?.filter(
+        (menu) => menu.category === category && menu.status !== "중단"
+      ) || []
+    );
   };
 
-  useEffect(() => {
-    if (isFocused) {
+  // useEffect(() => {
+  //   if (isFocused) {
+  //     dispatch(getMenu());
+  //   }
+  // }, [isFocused, dispatch]);
+
+  useFocusEffect(
+    useCallback(() => {
       dispatch(getMenu());
-    }
-  }, [isFocused, dispatch]);
+    }, [dispatch])
+  );
 
   return (
     <GradientScreenWrapper>
