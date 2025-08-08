@@ -11,8 +11,10 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   Platform,
+  Image,
 } from "react-native";
 import axios from "axios";
+import * as ImagePicker from "expo-image-picker";
 
 export default function MenuCreateModal({
   visible,
@@ -26,6 +28,7 @@ export default function MenuCreateModal({
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("상시");
   const [price, setPrice] = useState(0);
+  const [image, setImage] = useState(null);
 
   const isEditMode = !!initialData;
   useEffect(() => {
@@ -35,25 +38,74 @@ export default function MenuCreateModal({
       setDescription(initialData?.description || "");
       setStatus(initialData?.status || "상시");
       setPrice(initialData?.price?.toString() || "");
+      setImage(initialData?.imageUrl ? { uri: initialData.imageUrl } : null);
     }
   }, [visible, initialData]);
+
+  const requestPermission = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert(
+        "권한 필요",
+        "이미지를 업로드하려면 사진 접근 권한이 필요합니다"
+      );
+      return false;
+    }
+    return true;
+  };
+
+  const pickImage = async () => {
+    try {
+      const ok = await requestPermission();
+      if (!ok) return;
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images, // or 'images'
+        allowsEditing: true,
+        quality: 0.85, // 0~1
+      });
+
+      if (!result.canceled && result.assets?.length > 0) {
+        const asset = result.assets[0];
+        const uri = asset.uri;
+        const fileName = asset.fileName || uri.split("/").pop() || "upload.jpg";
+        const mime =
+          asset.mimeType ||
+          (fileName.toLowerCase().endsWith(".png")
+            ? "image/png"
+            : "image/jpeg");
+
+        setImage({ uri, fileName, mime });
+      }
+    } catch (e) {
+      console.error("pickImage error:", e);
+    }
+  };
+
+  const removeImage = () => setImage(null);
 
   const handleSubmit = async () => {
     if (!name || !category || !description || !price) {
       console.error("폼을 다시 입력");
       return;
     }
-    const payload = {
-      name,
-      category,
-      description,
-      price: Number(price),
-      status,
-    };
+    const form = new FormData();
+    form.append("name", name);
+    form.append("category", category);
+    form.append("description", description);
+    form.append("price", Number(price));
+    form.append("status", status);
+    if (image?.uri) {
+      form.append("image", {
+        uri: image.uri,
+        name: image.fileName || "upload.jpg",
+        type: image.mime || "image/jpeg",
+      });
+    }
     if (isEditMode) {
-      onEdit(initialData._id, payload);
+      onEdit(initialData._id, form, !!image?.uri);
     } else {
-      onCreate(payload);
+      onCreate(form, !!image?.uri);
     }
   };
 
@@ -67,6 +119,7 @@ export default function MenuCreateModal({
       setDescription("");
       setStatus("상시");
       setPrice(0);
+      setImage(null);
     }
   }, [visible]);
 
@@ -111,7 +164,37 @@ export default function MenuCreateModal({
                   </TouchableOpacity>
                 ))}
               </View>
-
+              <Text style={styles.label}>이미지</Text>
+              {image?.uri ? (
+                <View style={{ alignItems: "center", marginBottom: 12 }}>
+                  <Image
+                    source={{ uri: image.uri }}
+                    style={{ width: 180, height: 180, borderRadius: 8 }}
+                    resizeMode="cover"
+                  />
+                  <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
+                    <TouchableOpacity
+                      style={styles.secondaryButton}
+                      onPress={pickImage}
+                    >
+                      <Text style={styles.secondaryText}>다시 선택</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.secondaryButton}
+                      onPress={removeImage}
+                    >
+                      <Text style={styles.secondaryText}>삭제</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ) : (
+                <TouchableOpacity
+                  style={styles.secondaryButton}
+                  onPress={pickImage}
+                >
+                  <Text style={styles.secondaryText}>이미지 선택</Text>
+                </TouchableOpacity>
+              )}
               <TextInput
                 placeholder="설명"
                 placeholderTextColor="#666"
@@ -254,4 +337,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 15,
   },
+  secondaryButton: {
+    alignSelf: "flex-start",
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    backgroundColor: "#eee",
+  },
+  secondaryText: { color: "#333", fontWeight: "600" },
 });

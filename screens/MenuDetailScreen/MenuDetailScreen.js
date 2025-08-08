@@ -21,7 +21,6 @@ export default function MenuDetailScreen({ route }) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const { topReviewList } = useSelector((state) => state.review);
-  console.log(topReviewList);
   const { menu: initialMenu } = route.params;
   const [menu, setMenu] = useState(initialMenu);
   const navigator = useNavigation();

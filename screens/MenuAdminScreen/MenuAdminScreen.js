@@ -49,9 +49,13 @@ export default function MenuAdminScreen() {
     }
   };
 
-  const handleCreate = async (newMenu) => {
+  const handleCreate = async (newMenu, hasFile) => {
     try {
-      const res = await backApi.post("/menu", newMenu);
+      const res = await backApi.post("/menu", newMenu, {
+        headers: hasFile
+          ? { "Content-Type": "multipart/form-data" }
+          : undefined,
+      });
       dispatch(getMenu());
       setIsModalVisible(false);
     } catch (error) {
@@ -59,9 +63,13 @@ export default function MenuAdminScreen() {
     }
   };
 
-  const handleEdit = async (id, editMenu) => {
+  const handleEdit = async (id, editMenu, hasFile) => {
     try {
-      const res = await backApi.put(`/menu/${id}`, editMenu);
+      const res = await backApi.put(`/menu/${id}`, editMenu, {
+        headers: hasFile
+          ? { "Content-Type": "multipart/form-data" }
+          : undefined,
+      });
       dispatch(getMenu());
       setIsModalVisible(false);
     } catch (error) {

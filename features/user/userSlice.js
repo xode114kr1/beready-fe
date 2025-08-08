@@ -24,6 +24,7 @@ export const login = createAsyncThunk(
     try {
       const res = await backApi.post("/auth/login", { email, password });
       const { token, user } = res.data;
+      console.log(token);
       await AsyncStorage.setItem("token", token);
       return user;
     } catch (error) {
