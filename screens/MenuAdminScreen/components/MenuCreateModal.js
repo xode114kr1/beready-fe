@@ -38,7 +38,7 @@ export default function MenuCreateModal({
       setDescription(initialData?.description || "");
       setStatus(initialData?.status || "상시");
       setPrice(initialData?.price?.toString() || "");
-      setImage(initialData?.imageUrl ? { uri: initialData.imageUrl } : null);
+      setImage(initialData?.image ? { uri: initialData.image } : null);
     }
   }, [visible, initialData]);
 
@@ -172,6 +172,7 @@ export default function MenuCreateModal({
                     style={{ width: 180, height: 180, borderRadius: 8 }}
                     resizeMode="cover"
                   />
+
                   <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
                     <TouchableOpacity
                       style={styles.secondaryButton}
