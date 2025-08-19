@@ -4,6 +4,8 @@ import MenuScreen from "../screens/MenuScreen/MenuScreen";
 import MenuDetailScreen from "../screens/MenuDetailScreen/MenuDetailScreen";
 import ReviewScreen from "../screens/ReviewScreen/ReviewScreen";
 import ReviewFormScreen from "../screens/ReviewFormScreen/ReviewFormScreen";
+import MenuSelectScreen from "../screens/MenuSelectScreen/MenuSelectScreen";
+import LilacMenuScreen from "../screens/LilacMenuScreen/LilacMenuScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,7 +25,17 @@ export default function MenuStack() {
       }}
     >
       <Stack.Screen
-        name="MenuMain"
+        name="MenuSelect"
+        component={MenuSelectScreen}
+        options={{ title: "식당 선택" }}
+      />
+      <Stack.Screen
+        name="LilacMenuList"
+        component={LilacMenuScreen}
+        options={{ title: "메뉴" }}
+      />
+      <Stack.Screen
+        name="DalelacMenuList"
         component={MenuScreen}
         options={{ title: "메뉴" }}
       />
