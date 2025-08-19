@@ -53,7 +53,7 @@ export default function MenuDetailScreen({ route }) {
   }, [isFocused]);
 
   return (
-    <GradientScreenWrapper>
+    <GradientScreenWrapper variant="green">
       <ScrollView style={styles.container}>
         <View style={styles.card}>
           <View style={styles.image_view}>
@@ -116,12 +116,12 @@ const styles = StyleSheet.create({
   },
   card: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#BFE8D1",
     borderRadius: 12,
     padding: 16,
     backgroundColor: "#fff",
     marginBottom: 24,
-    borderLeftColor: colors.leftBorder,
+    borderLeftColor: "#3CB371",
     borderLeftWidth: 5,
   },
   image_view: {
@@ -139,39 +139,49 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     marginBottom: 8,
+    color: "#22543D",
   },
   price: {
     fontSize: 14,
     marginBottom: 4,
+    color: "#2F855A",
   },
   description: {
     fontSize: 14,
     marginBottom: 4,
+    color: "#2F855A",
   },
   rating: {
     fontSize: 14,
+    color: "#22543D",
   },
   reviewTitle: {
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 12,
+    color: "#2F855A",
   },
   reviewBox: {
-    backgroundColor: "#DFF2FF",
+    backgroundColor: "#EAFBF2",
     borderRadius: 12,
     padding: 12,
     marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "#BFE8D1",
   },
   reviewUser: {
     fontWeight: "bold",
     marginBottom: 4,
+    color: "#22543D",
   },
   reviewContent: {
     fontSize: 14,
     marginBottom: 4,
+    color: "#1A202C",
   },
   reviewRating: {
     fontSize: 13,
+    color: "#2F855A",
   },
   button_contanier: {
     flexDirection: "row",
@@ -186,24 +196,29 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 24,
     borderRadius: 8,
-    backgroundColor: "#BFE2FF",
+    backgroundColor: "#3CB371",
+    shadowColor: "#3CB371",
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
   },
   moreButtonText: {
-    color: "#2471D6",
+    color: "#fff",
     fontWeight: "bold",
   },
   noReviewBox: {
     padding: 20,
     marginVertical: 4,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#F8FFFB",
     borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "#BFE8D1",
   },
   noReviewText: {
     fontSize: 14,
-    color: "#999",
+    color: "#6B8F6F",
   },
 });

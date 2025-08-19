@@ -32,12 +32,12 @@ export default function MenuStack() {
       <Stack.Screen
         name="LilacMenuList"
         component={LilacMenuScreen}
-        options={{ title: "메뉴" }}
+        options={{ title: "메뉴-라일락" }}
       />
       <Stack.Screen
         name="DalelacMenuList"
         component={MenuScreen}
-        options={{ title: "메뉴" }}
+        options={{ title: "메뉴-다래락" }}
       />
       <Stack.Screen
         name="MenuDetail"

@@ -44,7 +44,7 @@ export default function MenuScreen() {
   );
 
   return (
-    <GradientScreenWrapper>
+    <GradientScreenWrapper variant="green">
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {Object.entries(categoryMap).map(([key, label]) => {
           const categoryMenus = getMenusByCategory(key);

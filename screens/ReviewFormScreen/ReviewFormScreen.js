@@ -99,7 +99,7 @@ export default function ReviewFormScreen() {
   };
 
   return (
-    <GradientScreenWrapper>
+    <GradientScreenWrapper variant="green">
       <KeyboardAvoidingView
         style={styles.avoidingView}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -165,11 +165,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 24,
+    color: "#22543D",
   },
   label: {
     fontSize: 14,
     marginBottom: 6,
     fontWeight: "600",
+    color: "#2F855A",
   },
   input: {
     backgroundColor: "#fff",
@@ -177,7 +179,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#BFE8D1",
+    color: "#1A202C",
+  },
+  readonly: {
+    color: "#2D3748",
   },
   textarea: {
     backgroundColor: "#fff",
@@ -185,15 +191,21 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     height: 120,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#BFE8D1",
     textAlignVertical: "top",
     marginBottom: 24,
+    color: "#1A202C",
   },
   button: {
-    backgroundColor: "#1E90FF",
+    backgroundColor: "#3CB371",
     padding: 14,
     borderRadius: 10,
     alignItems: "center",
+    shadowColor: "#3CB371",
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
   },
   buttonText: {
     color: "#fff",

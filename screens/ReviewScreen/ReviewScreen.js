@@ -74,7 +74,7 @@ export default function ReviewScreen() {
     }
   }, [isFocused, dispatch]);
   return (
-    <GradientScreenWrapper>
+    <GradientScreenWrapper variant="green">
       <View style={styles.container}>
         <View style={styles.filterRow}>
           <TouchableOpacity
@@ -85,9 +85,10 @@ export default function ReviewScreen() {
             <Checkbox
               value={onlyMine}
               onValueChange={setOnlyMine}
-              color={onlyMine ? "#1E40AF" : undefined}
+              color={onlyMine ? "#3CB371" : undefined}
               style={styles.checkbox}
             />
+
             <Text
               style={[styles.checkboxLabel, onlyMine && styles.checkedLabel]}
             >
@@ -184,6 +185,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 16,
+    color: "#22543D",
   },
   filterRow: {
     flexDirection: "row",
@@ -196,39 +198,42 @@ const styles = StyleSheet.create({
   checkboxContainer: {
     flexDirection: "row",
     alignItems: "center",
-    borderColor: "#1E40AF",
+    borderColor: "#3CB371",
     borderWidth: 1,
     padding: 10,
     borderRadius: 8,
     width: "30%",
   },
   checked: {
-    backgroundColor: "#1E40AF",
+    backgroundColor: "#3CB371",
+    borderColor: "#3CB371",
   },
   checkboxLabel: {
     marginLeft: 8,
     fontSize: 14,
     fontWeight: "bold",
-    color: "#1E40AF",
+    color: "#3CB371",
   },
-
   checkedLabel: {
-    color: "#FFFFFF", // Text에 적용
+    color: "#FFFFFF",
   },
   tag: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#BFE2FF",
+    backgroundColor: "#EAFBF2",
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#BFE8D1",
   },
   selectedTag: {
-    backgroundColor: "#A7D8FF",
+    backgroundColor: "#DDF6EA",
+    borderColor: "#BFE8D1",
   },
   tagText: {
     fontSize: 15,
-    color: "#1E40AF",
+    color: "#2F855A",
     fontWeight: "bold",
   },
   modalOverlay: {

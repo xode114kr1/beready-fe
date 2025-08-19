@@ -31,7 +31,7 @@ export default function MenuSelectScreen() {
               </View>
             </View>
             <Text style={styles.cardTitle}>뷔페형</Text>
-            <Text style={styles.cardDesc}>원하는 만큼 담아먹기</Text>
+            <Text style={styles.cardDesc}>한식 레스토랑</Text>
             <Text style={styles.cardCTA}>메뉴 보러가기 ›</Text>
           </Pressable>
 
@@ -51,7 +51,7 @@ export default function MenuSelectScreen() {
               </View>
             </View>
             <Text style={styles.cardTitle}>고정 메뉴</Text>
-            <Text style={styles.cardDesc}>카테고리별 선택 주문</Text>
+            <Text style={styles.cardDesc}>학생 식당</Text>
             <Text style={styles.cardCTA}>메뉴 보러가기 ›</Text>
           </Pressable>
         </View>

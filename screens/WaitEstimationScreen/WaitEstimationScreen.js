@@ -29,7 +29,7 @@ export default function WaitEstimationScreen() {
   }, [theme, selectedCategory]);
 
   return (
-    <GradientScreenWrapper>
+    <GradientScreenWrapper variant={theme == "라일락" ? "blue" : "green"}>
       <View style={styles.container}>
         <View style={styles.themeToggle}>
           <TouchableOpacity
