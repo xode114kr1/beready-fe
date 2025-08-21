@@ -34,6 +34,18 @@ export const login = createAsyncThunk(
   }
 );
 
+export const updateName = createAsyncThunk(
+  "user/me/name",
+  async (name, { rejectWithValue }) => {
+    try {
+      const res = await backApi.patch("/user/me/name", { name });
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -74,6 +86,20 @@ const userSlice = createSlice({
         state.error = "";
       })
       .addCase(register.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateName.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateName.fulfilled, (state, action) => {
+        state.error = "";
+        state.isLoading = false;
+        state.user = action.payload;
+        state.isLogin = true;
+        if (action.payload.level === "admin") state.isAdmin = true;
+      })
+      .addCase(updateName.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

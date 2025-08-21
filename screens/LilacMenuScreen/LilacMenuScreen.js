@@ -5,16 +5,15 @@ import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 
 const { width } = Dimensions.get("window");
 const CARD_GAP = 12;
-const CARD_WIDTH = Math.round(width * 0.8); // 옆 카드가 살짝 보이도록
-const SIDE_PADDING = Math.round((width - CARD_WIDTH) / 2); // 첫/마지막 카드 중앙 정렬
-const WEEK_LABELS = ["월", "화", "수", "목", "금", "토", "일"]; // 월=0 기준
+const CARD_WIDTH = Math.round(width * 0.8);
+const SIDE_PADDING = Math.round((width - CARD_WIDTH) / 2);
+const WEEK_LABELS = ["월", "화", "수", "목", "금", "토", "일"];
 
 export default function LilacMenuScreen() {
   const now = new Date();
   const jsDay = now.getDay(); // Sun=0 .. Sat=6
   const todayIdxMon0 = (jsDay + 6) % 7; // Mon=0 .. Sun=6
 
-  // ✅ 주간 메뉴 예시 (API 연동 시 치환)
   const weeklyMenu = useMemo(
     () => [
       { items: ["콩불 덮밥", "두부 샐러드", "유부장국"] }, // 월(0)
@@ -68,15 +67,14 @@ export default function LilacMenuScreen() {
           <Text style={styles.infoTitle}>라일락 운영 정보</Text>
           <View style={styles.infoRow}>
             <Text style={styles.infoLabel}>운영시간</Text>
-            <Text style={styles.infoValue}>11:30–13:30</Text>
+            <Text style={styles.infoValue}>11:20-14:00</Text>
           </View>
           <View style={styles.infoRow}>
             <Text style={styles.infoLabel}>위치</Text>
-            <Text style={styles.infoValue}>학생회관 1층</Text>
+            <Text style={styles.infoValue}>미래관</Text>
           </View>
         </View>
 
-        {/* ⬇️ 주간 카드: 중앙 정렬 + 옆 카드 살짝 보이기 + 오늘 카드 강조 */}
         <FlatList
           horizontal
           data={remaining}
@@ -166,7 +164,7 @@ const styles = StyleSheet.create({
     color: "#3B63C4",
     marginBottom: 6,
   },
-  cardDayToday: { color: "#2344A5" }, // 오늘은 조금 더 진하게
+  cardDayToday: { color: "#2344A5" },
   cardItem: { fontSize: 13.5, color: "#444", marginTop: 3 },
-  cardItemToday: { color: "#2A387A" }, // 오늘 카드의 아이템 텍스트도 살짝 진하게
+  cardItemToday: { color: "#2A387A" },
 });
