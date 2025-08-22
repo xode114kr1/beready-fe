@@ -46,6 +46,21 @@ export const updateName = createAsyncThunk(
   }
 );
 
+export const updatePassword = createAsyncThunk(
+  "user/me/password",
+  async ({ oldPassword, newPassword }, { rejectWithValue }) => {
+    try {
+      const res = await backApi.patch("/user/me/password", {
+        oldPassword,
+        newPassword,
+      });
+      return res.data.data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data?.error);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -100,6 +115,20 @@ const userSlice = createSlice({
         if (action.payload.level === "admin") state.isAdmin = true;
       })
       .addCase(updateName.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(updatePassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updatePassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = "";
+        state.user = action.payload;
+        state.isLogin = true;
+        if (action.payload.level === "admin") state.isAdmin = true;
+      })
+      .addCase(updatePassword.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

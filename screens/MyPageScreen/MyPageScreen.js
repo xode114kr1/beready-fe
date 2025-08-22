@@ -13,24 +13,21 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
-  logout /*, setName */,
+  logout,
   updateName,
+  updatePassword,
 } from "../../features/user/userSlice";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
-import { backApi } from "../../utils/api";
-// import { backApi } from "../../utils/api"; // 너 프로젝트에 맞게 주석 해제
+import PasswordChangeModal from "./components/PasswordChangeModal";
 
 export default function MyPageScreen() {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
+  const { user, error } = useSelector((state) => state.user);
   const initialName = useMemo(() => user?.name || "사용자", [user]);
 
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(initialName);
   const [pwModal, setPwModal] = useState(false);
-  const [currPw, setCurrPw] = useState("");
-  const [newPw, setNewPw] = useState("");
-  const [newPw2, setNewPw2] = useState("");
 
   const handleLogout = () => {
     Alert.alert("로그아웃", "정말 로그아웃 하시겠습니까?", [
@@ -69,51 +66,17 @@ export default function MyPageScreen() {
   };
 
   const openPwModal = () => {
-    setCurrPw("");
-    setNewPw("");
-    setNewPw2("");
     setPwModal(true);
-  };
-
-  const submitPassword = async () => {
-    if (!currPw || !newPw) {
-      Alert.alert("입력 필요", "현재/새 비밀번호를 모두 입력해 주세요.");
-      return;
-    }
-    if (newPw.length < 6) {
-      Alert.alert("조건 미충족", "새 비밀번호는 6자 이상이어야 합니다.");
-      return;
-    }
-    if (newPw !== newPw2) {
-      Alert.alert("불일치", "새 비밀번호 확인이 일치하지 않습니다.");
-      return;
-    }
-    try {
-      // TODO: 서버 연동
-      // await backApi.patch("/users/me/password", {
-      //   currentPassword: currPw,
-      //   newPassword: newPw,
-      // });
-      setPwModal(false);
-      Alert.alert("완료", "비밀번호가 변경되었습니다.");
-    } catch (e) {
-      Alert.alert(
-        "실패",
-        e?.response?.data?.error || "비밀번호 변경에 실패했습니다."
-      );
-    }
   };
 
   return (
     <GradientScreenWrapper>
       <View style={styles.container}>
-        {/* 상단 프로필 영역 */}
         <View style={styles.headerCard}>
           <View style={styles.avatarPlaceholder}>
             <Text style={{ fontSize: 22 }}>👤</Text>
           </View>
 
-          {/* 이름 + 인라인 수정 */}
           {!editing ? (
             <View style={styles.row}>
               <Text style={styles.name}>{name}</Text>
@@ -161,52 +124,10 @@ export default function MyPageScreen() {
           <Text style={[styles.actionTitle, styles.dangerTxt]}>로그아웃</Text>
         </Pressable>
 
-        <Modal visible={pwModal} animationType="slide" transparent>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : undefined}
-            style={styles.modalWrap}
-          >
-            <View style={styles.modalCard}>
-              <Text style={styles.modalTitle}>비밀번호 수정</Text>
-              <TextInput
-                value={currPw}
-                onChangeText={setCurrPw}
-                placeholder="현재 비밀번호"
-                secureTextEntry
-                style={styles.input}
-              />
-              <TextInput
-                value={newPw}
-                onChangeText={setNewPw}
-                placeholder="새 비밀번호 (6자 이상)"
-                secureTextEntry
-                style={styles.input}
-              />
-              <TextInput
-                value={newPw2}
-                onChangeText={setNewPw2}
-                placeholder="새 비밀번호 확인"
-                secureTextEntry
-                style={styles.input}
-              />
-
-              <View style={styles.modalBtns}>
-                <Pressable
-                  style={[styles.btn, styles.btnGhost]}
-                  onPress={() => setPwModal(false)}
-                >
-                  <Text style={styles.btnGhostTxt}>취소</Text>
-                </Pressable>
-                <Pressable
-                  style={[styles.btn, styles.btnPrimary]}
-                  onPress={submitPassword}
-                >
-                  <Text style={styles.btnPrimaryTxt}>변경</Text>
-                </Pressable>
-              </View>
-            </View>
-          </KeyboardAvoidingView>
-        </Modal>
+        <PasswordChangeModal
+          visible={pwModal}
+          onClose={() => setPwModal(false)}
+        />
       </View>
     </GradientScreenWrapper>
   );
