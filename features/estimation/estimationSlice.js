@@ -8,7 +8,7 @@ export const getEstimationLilac = createAsyncThunk(
       const res = await fastApi.get("/estimate/lilac");
       return res.data;
     } catch (error) {
-      return rejectWithValue(error.error);
+      return rejectWithValue(error?.response?.data?.error);
     }
   }
 );
@@ -21,7 +21,7 @@ export const getEstimationdalelac = createAsyncThunk(
       const res = await fastApi.get(`/estimate/dalelac/${cate[category]}`);
       return res.data;
     } catch (error) {
-      return rejectWithValue(error.error);
+      return rejectWithValue(error?.response?.data?.error);
     }
   }
 );

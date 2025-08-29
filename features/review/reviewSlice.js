@@ -8,9 +8,7 @@ export const getReviewList = createAsyncThunk(
       const res = await backApi.get("/review");
       return res.data.data;
     } catch (error) {
-      return rejectWithValue(
-        error?.response?.data?.error || "리뷰 불러오기 실패"
-      );
+      return rejectWithValue(error?.response?.data?.error);
     }
   }
 );
@@ -22,9 +20,7 @@ export const getTopReviewList = createAsyncThunk(
       const res = await backApi.get(`/review/top/${id}`);
       return res.data.data;
     } catch (error) {
-      return rejectWithValue(
-        error?.response?.data?.error || "리뷰 불러오기 실패"
-      );
+      return rejectWithValue(error?.response?.data?.error);
     }
   }
 );
