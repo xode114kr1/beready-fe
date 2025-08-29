@@ -11,7 +11,7 @@ export default function WaitBox({ waitTime, peopleCount, theme }) {
 
   return (
     <LinearGradient colors={gradientColors} style={styles.waiting_box}>
-      <Text style={styles.time}>{waitTime}</Text>
+      <Text style={styles.time}>{waitTime}분</Text>
       <Text style={styles.people}>
         대기인원 :{" "}
         <Text style={styles.peopleStrong}>
@@ -44,7 +44,7 @@ const styles_common = {
 const green_styles = StyleSheet.create({
   ...styles_common,
   time: {
-    fontSize: 50,
+    fontSize: 40,
     fontWeight: "bold",
     color: "#3CB371", // 초록
   },
@@ -57,7 +57,7 @@ const green_styles = StyleSheet.create({
 const blue_styles = StyleSheet.create({
   ...styles_common,
   time: {
-    fontSize: 50,
+    fontSize: 40,
     fontWeight: "bold",
     color: "#3B63C4", // 파랑
   },

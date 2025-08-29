@@ -5,7 +5,7 @@ export const getEstimationLilac = createAsyncThunk(
   "estimation/lilac",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await fastApi.get("/counts/lilac");
+      const res = await fastApi.get("/estimate/lilac");
       return res.data;
     } catch (error) {
       return rejectWithValue(error.error);
@@ -14,11 +14,11 @@ export const getEstimationLilac = createAsyncThunk(
 );
 
 export const getEstimationdalelac = createAsyncThunk(
-  "estimation/dalelac/japan",
+  "estimation/dalelac",
   async (category, { rejectWithValue }) => {
     try {
       cate = { 일식: "japan", 한식: "korea", 일품: "specialty" };
-      const res = await fastApi.get(`/counts/dalelac_${cate[category]}`);
+      const res = await fastApi.get(`/estimate/dalelac/${cate[category]}`);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.error);
@@ -29,7 +29,7 @@ export const getEstimationdalelac = createAsyncThunk(
 const estimationSlice = createSlice({
   name: "estimation",
   initialState: {
-    time: "00:00",
+    time: "00",
     peopleCount: 0,
     isLoading: false,
     error: "",
@@ -40,8 +40,8 @@ const estimationSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getEstimationLilac.fulfilled, (state, action) => {
-        state.time = action.payload.time;
-        state.peopleCount = action.payload.peopleCount;
+        state.time = action.payload.wait_time;
+        state.peopleCount = action.payload.people;
         state.isLoading = false;
         state.error = "";
       })
@@ -52,8 +52,8 @@ const estimationSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getEstimationdalelac.fulfilled, (state, action) => {
-        state.time = action.payload.time;
-        state.peopleCount = action.payload.peopleCount;
+        state.time = action.payload.wait_time;
+        state.peopleCount = action.payload.people;
         state.isLoading = false;
         state.error = "";
       })

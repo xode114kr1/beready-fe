@@ -11,25 +11,32 @@ import {
 export default function WaitEstimationScreen() {
   const dispatch = useDispatch();
   const { time, peopleCount } = useSelector((state) => state.estimation);
-  console.log(time, peopleCount);
   const [theme, setTheme] = useState("라일락");
   const [selectedCategory, setSelectedCategory] = useState("일식");
 
   const isDarerak = theme === "다래락";
-  useEffect(() => {
-    dispatch(getEstimationLilac());
-  }, [dispatch]);
 
-  useEffect(() => {
-    if (theme == "라일락") {
+  const fetchEstimation = () => {
+    if (theme === "라일락") {
       dispatch(getEstimationLilac());
-    } else if (theme == "다래락") {
+    } else {
       dispatch(getEstimationdalelac(selectedCategory));
     }
+  };
+
+  useEffect(() => {
+    fetchEstimation();
+  }, [theme, selectedCategory]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchEstimation();
+    }, 2000);
+    return () => clearInterval(interval);
   }, [theme, selectedCategory]);
 
   return (
-    <GradientScreenWrapper variant={theme == "라일락" ? "blue" : "green"}>
+    <GradientScreenWrapper variant={theme === "라일락" ? "blue" : "green"}>
       <View style={styles.container}>
         <View style={styles.themeToggle}>
           <TouchableOpacity
@@ -66,13 +73,15 @@ export default function WaitEstimationScreen() {
           </TouchableOpacity>
         </View>
 
+        {/* 대기인원 박스 */}
         <WaitBox waitTime={time} peopleCount={peopleCount} theme={theme} />
 
+        {/* 다래락 카테고리 선택 */}
         <View
           style={[
             styles.buttonContainer,
             { opacity: isDarerak ? 1 : 0 },
-            !isDarerak && { pointerEvents: "none" }, // 클릭 방지
+            !isDarerak && { pointerEvents: "none" },
           ]}
         >
           {["일식", "한식", "일품"].map((category) => (
