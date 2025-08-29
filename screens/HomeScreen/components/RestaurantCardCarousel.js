@@ -54,12 +54,7 @@ export default function RestaurantCardCarousel() {
         renderItem={({ item }) => {
           const t = THEMES[item.theme];
           return (
-            <View
-              style={[
-                styles.card,
-                { borderColor: t.cardBorder, shadowColor: t.cardBorder },
-              ]}
-            >
+            <View style={[styles.card]}>
               <View style={styles.imageHolder}>
                 <Image source={item.image} style={styles.image} />
               </View>
@@ -132,7 +127,6 @@ const styles = StyleSheet.create({
     width: 350, // 시안처럼 중앙부 고정폭 카드
     backgroundColor: "#fff",
     borderRadius: 24,
-    borderWidth: 2, // 테두리 강조 (테마 색 적용)
     padding: 16,
     overflow: "hidden",
 
@@ -168,10 +162,10 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
 
-  // Inner menu box with rounded blue/green border
   menuBox: {
     borderWidth: 2,
     borderRadius: 16,
+    backgroundColor: "#e2e2e2ff",
     paddingVertical: 14,
     paddingHorizontal: 16,
   },

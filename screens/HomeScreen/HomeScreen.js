@@ -51,7 +51,6 @@ export default function HomeScreen() {
 
         <RestaurantCardCarousel />
 
-        {/* 하단 2개 버튼 가로 배치 */}
         <View style={styles.rowButtons}>
           <TouchableOpacity
             style={styles.bigButton}
