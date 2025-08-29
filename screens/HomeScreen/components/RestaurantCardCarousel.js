@@ -124,13 +124,12 @@ const styles = StyleSheet.create({
   },
 
   card: {
-    width: 350, // 시안처럼 중앙부 고정폭 카드
+    width: 350,
     backgroundColor: "#fff",
     borderRadius: 24,
     padding: 16,
     overflow: "hidden",
 
-    // 그림자 디테일
     shadowOpacity: 0.18,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 6 },
@@ -163,9 +162,10 @@ const styles = StyleSheet.create({
   },
 
   menuBox: {
-    borderWidth: 2,
+    borderWidth: 1,
+    borderLeftWidth: 4,
     borderRadius: 16,
-    backgroundColor: "#e2e2e2ff",
+    backgroundColor: "#f7f7f7ff",
     paddingVertical: 14,
     paddingHorizontal: 16,
   },
