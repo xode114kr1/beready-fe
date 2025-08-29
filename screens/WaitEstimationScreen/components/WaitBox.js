@@ -4,7 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 const { width } = Dimensions.get("window");
 const CIRCLE_SIZE = width * 0.85;
 
-export default function WaitBox({ waitTime, peopleCount, theme }) {
+export default function WaitBox({ waitTime, peopleCount, theme, error }) {
   const gradientColors =
     theme === "다래락" ? ["#C8FACC", "#f1fff5ff"] : ["#A7D8FF", "#F5FAFF"];
   const styles = theme === "다래락" ? green_styles : blue_styles;
@@ -18,6 +18,7 @@ export default function WaitBox({ waitTime, peopleCount, theme }) {
           {String(peopleCount).padStart(2, "0")}명
         </Text>
       </Text>
+      {error ? <Text style={styles.error}>{error}</Text> : null}
     </LinearGradient>
   );
 }
@@ -38,6 +39,12 @@ const styles_common = {
   people: {
     marginTop: 8,
     fontSize: 18,
+  },
+  error: {
+    marginTop: 12,
+    color: "red",
+    fontSize: 16,
+    fontWeight: "600",
   },
 };
 

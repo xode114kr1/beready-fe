@@ -13,7 +13,7 @@ export const register = createAsyncThunk(
       });
       return res.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.error);
+      return rejectWithValue(error?.response?.data?.error || error.message);
     }
   }
 );
@@ -29,7 +29,7 @@ export const login = createAsyncThunk(
       return user;
     } catch (error) {
       console.log(error);
-      return rejectWithValue(error?.response?.data?.error);
+      return rejectWithValue(error?.response?.data?.error || error.message);
     }
   }
 );
@@ -41,7 +41,7 @@ export const updateName = createAsyncThunk(
       const res = await backApi.patch("/user/me/name", { name });
       return res.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.error);
+      return rejectWithValue(error?.response?.data?.error || error.message);
     }
   }
 );
@@ -56,7 +56,7 @@ export const updatePassword = createAsyncThunk(
       });
       return res.data.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.error);
+      return rejectWithValue(error?.response?.data?.error || error.message);
     }
   }
 );

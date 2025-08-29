@@ -8,7 +8,7 @@ export const getLilacTodayMenu = createSlice(
       const res = await fastApi.get("/lilac/menu/today");
       return res.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.error);
+      return rejectWithValue(error?.response?.data?.error || error.message);
     }
   }
 );
@@ -20,7 +20,7 @@ export const getLilacMenuList = createSlice(
       const res = await fastApi.get("/lilac/menu");
       return res.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.error);
+      return rejectWithValue(error?.response?.data?.error || error.message);
     }
   }
 );

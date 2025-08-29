@@ -8,7 +8,7 @@ export const getMenu = createAsyncThunk(
       const res = await backApi.get("/menu");
       return res.data.menuList;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.error);
+      return rejectWithValue(error?.response?.data?.error || error.message);
     }
   }
 );

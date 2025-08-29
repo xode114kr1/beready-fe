@@ -8,7 +8,7 @@ export const getReviewList = createAsyncThunk(
       const res = await backApi.get("/review");
       return res.data.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.error);
+      return rejectWithValue(error?.response?.data?.error || error.message);
     }
   }
 );
@@ -20,7 +20,7 @@ export const getTopReviewList = createAsyncThunk(
       const res = await backApi.get(`/review/top/${id}`);
       return res.data.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.error);
+      return rejectWithValue(error?.response?.data?.error || error.message);
     }
   }
 );

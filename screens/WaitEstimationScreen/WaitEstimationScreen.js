@@ -10,10 +10,12 @@ import {
 
 export default function WaitEstimationScreen() {
   const dispatch = useDispatch();
-  const { time, peopleCount } = useSelector((state) => state.estimation);
+  const { time, peopleCount, error, isLoading } = useSelector(
+    (state) => state.estimation
+  );
   const [theme, setTheme] = useState("라일락");
   const [selectedCategory, setSelectedCategory] = useState("일식");
-
+  console.log(error);
   const isDarerak = theme === "다래락";
 
   const fetchEstimation = () => {
@@ -74,7 +76,12 @@ export default function WaitEstimationScreen() {
         </View>
 
         {/* 대기인원 박스 */}
-        <WaitBox waitTime={time} peopleCount={peopleCount} theme={theme} />
+        <WaitBox
+          waitTime={time}
+          peopleCount={peopleCount}
+          theme={theme}
+          error={error}
+        />
 
         {/* 다래락 카테고리 선택 */}
         <View
