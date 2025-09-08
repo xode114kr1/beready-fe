@@ -1,6 +1,30 @@
 import React, { useState } from "react";
 import { View, Text, Image, StyleSheet, FlatList } from "react-native";
 
+function LilacMenu({ todayMenu }) {
+  return (
+    <View>
+      <Text style={{ fontWeight: "700" }}>제육볶음</Text>
+      <Text>샐러드바</Text>
+      <View style={{ flexDirection: "row", gap: 6 }}>
+        <Text>디저트</Text>
+        <Text>(리일일, 요거트)</Text>
+      </View>
+    </View>
+  );
+}
+
+function DallaeMenu({ randomMenu }) {
+  return (
+    <View>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <Text>{randomMenu?.name}</Text>
+        <Text>{randomMenu?.price}</Text>
+      </View>
+    </View>
+  );
+}
+
 const THEMES = {
   blue: {
     accent: "#3B63C4",
@@ -16,8 +40,7 @@ const THEMES = {
   },
 };
 
-export default function RestaurantCardCarousel() {
-  // --- 하드코딩 카드 데이터 (이미지 경로만 네 프로젝트에 맞게 교체) ---
+export default function RestaurantCardCarousel({ todayMenu, randomMenu }) {
   const cards = [
     {
       key: "lilac",
@@ -26,7 +49,8 @@ export default function RestaurantCardCarousel() {
       title: "미래관 - 라일락",
       time: "Open 11:30 / Close 14:00",
       boxTitle: "대표 메뉴",
-      menu: ["제육볶음", "샐러드바", "디저트(리일일, 요거트)"],
+      Menu: LilacMenu,
+      getMenuProps: () => ({ todayMenu }),
     },
     {
       key: "dallae",
@@ -35,7 +59,8 @@ export default function RestaurantCardCarousel() {
       title: "위드센터 - 다래락",
       time: "Open 09:00 / Close 19:00",
       boxTitle: "추천 메뉴",
-      menu: ["스멸김밥 3,500원", "된장국", "샐러드"],
+      Menu: DallaeMenu,
+      getMenuProps: () => ({ randomMenu }),
     },
   ];
 
@@ -53,6 +78,9 @@ export default function RestaurantCardCarousel() {
         ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
         renderItem={({ item }) => {
           const t = THEMES[item.theme];
+          const Menu = item.Menu;
+          const menuProps = item.getMenuProps?.() || {};
+
           return (
             <View style={[styles.card]}>
               <View style={styles.imageHolder}>
@@ -68,11 +96,7 @@ export default function RestaurantCardCarousel() {
                 <Text style={[styles.menuTitle, { color: t.accent }]}>
                   {item.boxTitle}
                 </Text>
-                {item.menu.map((m, i) => (
-                  <Text key={i} style={styles.menuLine}>
-                    {m}
-                  </Text>
-                ))}
+                <Menu {...menuProps} />
               </View>
 
               <View style={{ height: 8 }} />

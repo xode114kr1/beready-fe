@@ -9,8 +9,6 @@ import RestaurantCardCarousel from "./components/RestaurantCardCarousel";
 export default function HomeScreen() {
   const navigation = useNavigation();
 
-  const [randomReviewOne, setRandomReviewOne] = useState();
-  const [randomReviewTwo, setRandomReviewTwo] = useState();
   const [randomMenu, setRandomMenu] = useState(null);
 
   const fetchRandomMenu = async () => {
@@ -21,26 +19,14 @@ export default function HomeScreen() {
       console.log("fetchRandomMenu error : ", error.message);
     }
   };
-  const fetchRandomReview = async () => {
-    try {
-      const res1 = await backApi.get("/review/random");
-      const res2 = await backApi.get("/review/random");
-      setRandomReviewOne(res1.data.data);
-      setRandomReviewTwo(res2.data.data);
-    } catch (error) {
-      console.log("fetchRandomReview error", error.message);
-    }
-  };
 
   useEffect(() => {
     fetchRandomMenu();
-    fetchRandomReview();
   }, []);
 
   return (
     <GradientScreenWrapper>
       <View style={styles.container}>
-        {/* 상단 로고 영역 */}
         <View style={styles.imageBox}>
           <Image
             source={require("../../assets/Logo.png")}
@@ -49,7 +35,7 @@ export default function HomeScreen() {
           <Text style={styles.logoText}>Beready</Text>
         </View>
 
-        <RestaurantCardCarousel />
+        <RestaurantCardCarousel randomMenu={randomMenu} />
 
         <View style={styles.rowButtons}>
           <TouchableOpacity
@@ -65,30 +51,6 @@ export default function HomeScreen() {
           >
             <Text style={styles.bigButtonText}>메뉴{"\n"}바로가기</Text>
           </TouchableOpacity>
-        </View>
-
-        {/* 랜덤 리뷰(선택 사항: 하단에 작게 정리) */}
-        <View style={styles.reviewWrap}>
-          {!!randomReviewOne && (
-            <View style={styles.reviewBox}>
-              <Text style={styles.reviewStar}>
-                {randomReviewOne?.menuId?.name}
-              </Text>
-              <Text style={styles.reviewText}>
-                "{randomReviewOne?.content}" - {randomReviewOne?.userId?.name}
-              </Text>
-            </View>
-          )}
-          {!!randomReviewTwo && (
-            <View style={styles.reviewBox}>
-              <Text style={styles.reviewStar}>
-                {randomReviewTwo?.menuId?.name}
-              </Text>
-              <Text style={styles.reviewText}>
-                "{randomReviewTwo?.content}" - {randomReviewTwo?.userId?.name}
-              </Text>
-            </View>
-          )}
         </View>
       </View>
     </GradientScreenWrapper>
