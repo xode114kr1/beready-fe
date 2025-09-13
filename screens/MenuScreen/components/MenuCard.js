@@ -3,7 +3,7 @@ import { Image, Pressable, StyleSheet, Text } from "react-native";
 export default function MenuCard({ menu, onPress }) {
   return (
     <Pressable style={styles.card} onPress={onPress}>
-      <Image source={{ uri: menu.image }} style={styles.image} />
+      <Image source={{ uri: menu.imageUrl }} style={styles.image} />
       <Text style={styles.title}>{menu.name}</Text>
       <Text style={styles.price}>{menu.price}원</Text>
     </Pressable>

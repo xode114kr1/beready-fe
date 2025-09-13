@@ -57,7 +57,7 @@ export default function MenuDetailScreen({ route }) {
       <ScrollView style={styles.container}>
         <View style={styles.card}>
           <View style={styles.image_view}>
-            <Image source={{ uri: menu.image }} style={styles.image} />
+            <Image source={{ uri: menu.imageUrl }} style={styles.image} />
           </View>
           <Text style={styles.name}>{menu.name}</Text>
           <Text style={styles.price}>
