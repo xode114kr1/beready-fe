@@ -22,15 +22,14 @@ export default ({ config }) => ({
     },
     edgeToEdgeEnabled: true,
   },
-  web: { favicon: "./assets/favicon.png" },
+  platforms: ["ios", "android"],
 
   runtimeVersion: { policy: "sdkVersion" },
   updates: {
     url: "https://u.expo.dev/c05012a1-77e5-4f74-9fbf-825ca3800ba5", // projectId 기반
   },
   extra: {
-    BACKEND_LOCAL_URL:
-      process.env.BACKEND_LOCAL_URL ?? "http://192.168.0.138:5000/api/",
+    BACKEND_LOCAL_URL: process.env.EXPRESS_DEPLOY_URL,
     FASTAPI_LOCAL_URL:
       process.env.FASTAPI_LOCAL_URL ?? "http://192.168.0.138:8000/api/",
     eas: { projectId: "c05012a1-77e5-4f74-9fbf-825ca3800ba5" },
