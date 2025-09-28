@@ -38,7 +38,7 @@ export default function MenuCreateModal({
       setDescription(initialData?.description || "");
       setStatus(initialData?.status || "상시");
       setPrice(initialData?.price?.toString() || "");
-      setImage(initialData?.image ? { uri: initialData.image } : null);
+      setImage(initialData?.imageUrl ? { uri: initialData.imageUrl } : null);
     }
   }, [visible, initialData]);
 
