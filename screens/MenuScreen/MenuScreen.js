@@ -10,10 +10,11 @@ import {
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMenu } from "../../features/menu/menuSlice";
+import Spinner from "../../components/Spinner";
 
 export default function MenuScreen() {
   const dispatch = useDispatch();
-  const { menuList } = useSelector((state) => state.menu);
+  const { menuList, error, isLoading } = useSelector((state) => state.menu);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
@@ -45,28 +46,40 @@ export default function MenuScreen() {
 
   return (
     <GradientScreenWrapper variant="green">
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {Object.entries(categoryMap).map(([key, label]) => {
-          const categoryMenus = getMenusByCategory(key);
+      <View style={{ flex: 1 }}>
+        {isLoading ? (
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Spinner size={64} thickness={6} />
+          </View>
+        ) : (
+          <ScrollView contentContainerStyle={styles.scrollContainer}>
+            {Object.entries(categoryMap).map(([key, label]) => {
+              const categoryMenus = getMenusByCategory(key);
 
-          if (categoryMenus.length === 0) return null;
+              if (categoryMenus.length === 0) return null;
 
-          return (
-            <View key={key} style={styles.categorySection}>
-              <Text style={styles.categoryTitle}>{label}</Text>
-              <View style={styles.grid}>
-                {categoryMenus.map((menu, index) => (
-                  <MenuCard
-                    key={menu._id ?? index}
-                    menu={menu}
-                    onPress={() => navigation.navigate("MenuDetail", { menu })}
-                  />
-                ))}
-              </View>
-            </View>
-          );
-        })}
-      </ScrollView>
+              return (
+                <View key={key} style={styles.categorySection}>
+                  <Text style={styles.categoryTitle}>{label}</Text>
+                  <View style={styles.grid}>
+                    {categoryMenus.map((menu, index) => (
+                      <MenuCard
+                        key={menu._id ?? index}
+                        menu={menu}
+                        onPress={() =>
+                          navigation.navigate("MenuDetail", { menu })
+                        }
+                      />
+                    ))}
+                  </View>
+                </View>
+              );
+            })}
+          </ScrollView>
+        )}
+      </View>
     </GradientScreenWrapper>
   );
 }
