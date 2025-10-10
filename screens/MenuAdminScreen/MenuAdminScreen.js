@@ -19,6 +19,7 @@ import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 import { useDispatch, useSelector } from "react-redux";
 import { getMenu } from "../../features/menu/menuSlice";
 import { backApi } from "../../utils/api";
+import FullscreenLoader from "../../components/FullscreenLoader";
 
 export default function MenuAdminScreen() {
   const dispatch = useDispatch();
@@ -193,6 +194,7 @@ export default function MenuAdminScreen() {
           </View>
         </Pressable>
       </Modal>
+      <FullscreenLoader visible={isLoading} label="저장 중..." />
     </GradientScreenWrapper>
   );
 }
