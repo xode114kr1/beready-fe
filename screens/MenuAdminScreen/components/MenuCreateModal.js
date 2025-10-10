@@ -29,6 +29,7 @@ export default function MenuCreateModal({
   const [status, setStatus] = useState("상시");
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState(null);
+  const [isRemoveImage, setIsRemoveImage] = useState(false);
 
   const isEditMode = !!initialData;
   useEffect(() => {
@@ -60,9 +61,9 @@ export default function MenuCreateModal({
       if (!ok) return;
 
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images, // or 'images'
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        quality: 0.85, // 0~1
+        quality: 0.85,
       });
 
       if (!result.canceled && result.assets?.length > 0) {
@@ -82,7 +83,10 @@ export default function MenuCreateModal({
     }
   };
 
-  const removeImage = () => setImage(null);
+  const removeImage = () => {
+    setImage(null);
+    setIsRemoveImage(true);
+  };
 
   const handleSubmit = async () => {
     if (!name || !category || !description || !price) {
@@ -95,6 +99,8 @@ export default function MenuCreateModal({
     form.append("description", description);
     form.append("price", Number(price));
     form.append("status", status);
+    form.append("removeImage", isRemoveImage ? "true" : "false");
+
     if (image?.uri) {
       form.append("image", {
         uri: image.uri,
