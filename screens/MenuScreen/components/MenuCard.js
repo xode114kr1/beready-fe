@@ -1,9 +1,16 @@
-import { Image, Pressable, StyleSheet, Text } from "react-native";
+import { Image, Pressable, StyleSheet, Text } from 'react-native';
 
 export default function MenuCard({ menu, onPress }) {
   return (
     <Pressable style={styles.card} onPress={onPress}>
-      <Image source={{ uri: menu.imageUrl }} style={styles.image} />
+      <Image
+        source={
+          menu.imageUrl
+            ? { uri: menu.imageUrl }
+            : require('../../../assets/undefined.jpg')
+        }
+        style={styles.image}
+      />
       <Text style={styles.title}>{menu.name}</Text>
       <Text style={styles.price}>{menu.price}원</Text>
     </Pressable>
@@ -12,33 +19,33 @@ export default function MenuCard({ menu, onPress }) {
 
 const styles = StyleSheet.create({
   card: {
-    flexBasis: "30%",
+    flexBasis: '30%',
     aspectRatio: 3 / 4,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 12,
     elevation: 2,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOpacity: 0.05,
     shadowRadius: 4,
   },
   image: {
-    width: "80%",
-    height: "60%",
+    width: '80%',
+    height: '60%',
     borderRadius: 8,
-    resizeMode: "cover",
+    resizeMode: 'cover',
   },
   title: {
     marginTop: 8,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 14,
-    textAlign: "center",
+    textAlign: 'center',
   },
   price: {
     fontSize: 12,
-    color: "#666",
+    color: '#666',
     marginTop: 2,
   },
 });
