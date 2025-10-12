@@ -57,7 +57,14 @@ export default function MenuDetailScreen({ route }) {
       <ScrollView style={styles.container}>
         <View style={styles.card}>
           <View style={styles.image_view}>
-            <Image source={{ uri: menu.imageUrl }} style={styles.image} />
+            <Image
+              source={
+                menu.imageUrl
+                  ? { uri: menu.imageUrl }
+                  : require("../../assets/undefined.jpg")
+              }
+              style={styles.image}
+            />
           </View>
           <Text style={styles.name}>{menu.name}</Text>
           <Text style={styles.price}>
