@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 import WaitBox from "./components/WaitBox";
@@ -7,6 +7,7 @@ import {
   getEstimationdalelac,
   getEstimationLilac,
 } from "../../features/estimation/estimationSlice";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function WaitEstimationScreen() {
   const dispatch = useDispatch();
@@ -30,12 +31,13 @@ export default function WaitEstimationScreen() {
     fetchEstimation();
   }, [theme, selectedCategory]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
+  useFocusEffect(
+    useCallback(() => {
       fetchEstimation();
-    }, 2000);
-    return () => clearInterval(interval);
-  }, [theme, selectedCategory]);
+      const id = setInterval(fetchEstimation, 2000);
+      return () => clearInterval(id);
+    }, [theme, selectedCategory])
+  );
 
   return (
     <GradientScreenWrapper variant={theme === "라일락" ? "blue" : "green"}>
