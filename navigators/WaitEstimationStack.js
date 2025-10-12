@@ -20,7 +20,7 @@ export default function WaitEstimationStack() {
         headerTintColor: "#000",
       }}
     >
-      <Stack.Screen name="MenuMain" component={WaitEstimationScreen} />
+      <Stack.Screen name="Estimation" component={WaitEstimationScreen} />
     </Stack.Navigator>
   );
 }
