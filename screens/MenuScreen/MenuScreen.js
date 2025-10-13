@@ -32,17 +32,15 @@ export default function MenuScreen() {
     );
   };
 
-  // useEffect(() => {
-  //   if (isFocused) {
-  //     dispatch(getMenu());
-  //   }
-  // }, [isFocused, dispatch]);
+  useEffect(() => {
+    dispatch(getMenu());
+  }, [dispatch]);
 
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(getMenu());
-    }, [dispatch])
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     dispatch(getMenu());
+  //   }, [dispatch])
+  // );
 
   return (
     <GradientScreenWrapper variant="green">
