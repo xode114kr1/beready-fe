@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fastApi } from "../../utils/api";
 
-export const getLilacTodayMenu = createSlice(
+export const getLilacTodayMenu = createAsyncThunk(
   "lilac/menu/today",
   async (_, { rejectWithValue }) => {
     try {
@@ -13,12 +13,12 @@ export const getLilacTodayMenu = createSlice(
   }
 );
 
-export const getLilacMenuList = createSlice(
+export const getLilacMenuList = createAsyncThunk(
   "lilac/menu",
   async (_, { rejectWithValue }) => {
     try {
       const res = await fastApi.get("/lilac/menu");
-      return res.data;
+      return res.data.days;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.error || error.message);
     }
@@ -62,4 +62,4 @@ const lilacSlice = createSlice({
   },
 });
 
-module.exports = lilacSlice.reducer;
+export default lilacSlice.reducer;
