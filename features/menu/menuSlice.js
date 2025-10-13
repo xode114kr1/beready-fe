@@ -13,23 +13,10 @@ export const getMenu = createAsyncThunk(
   }
 );
 
-export const getLilacMenu = createAsyncThunk(
-  "menu",
-  async (_, { rejectWithValue }) => {
-    try {
-      const res = await fastApi.get("/lilac/menu");
-      return res.data.days;
-    } catch (error) {
-      return rejectWithValue(error?.response?.data?.error || error.message);
-    }
-  }
-);
-
 const menuSlice = createSlice({
   name: "menu",
   initialState: {
     menuList: null,
-    lilacMenuList: null,
     categoryList: [],
     menuByCategory: {},
     menuCount: 0,
@@ -62,18 +49,6 @@ const menuSlice = createSlice({
         state.menuByCategory = grouped;
       })
       .addCase(getMenu.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      })
-      .addCase(getLilacMenu.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getLilacMenu.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.error = "";
-        state.lilacMenuList = action.payload;
-      })
-      .addCase(getLilacMenu.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
