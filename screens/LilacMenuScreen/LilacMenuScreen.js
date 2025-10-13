@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, FlatList, Dimensions } from "react-native";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 import { getLilacMenuList } from "../../features/lilac/lilacSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Spinner from "../../components/Spinner";
 
 const { width } = Dimensions.get("window");
 const CARD_GAP = 12;
@@ -83,50 +84,65 @@ export default function LilacMenuScreen() {
   }, [todayStr]);
   return (
     <GradientScreenWrapper>
-      <View style={styles.container}>
-        <View style={styles.infoBox}>
-          <Text style={styles.infoTitle}>라일락 운영 정보</Text>
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>운영시간</Text>
-            <Text style={styles.infoValue}>11:20-14:00</Text>
+      <View style={{ flex: 1 }}>
+        {isLoading ? (
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Spinner size={64} thickness={6} />
           </View>
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>위치</Text>
-            <Text style={styles.infoValue}>미래관</Text>
-          </View>
-        </View>
-
-        <FlatList
-          horizontal
-          data={remaining}
-          keyExtractor={(it) => `lilac-${it.idx}`}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: SIDE_PADDING }}
-          ItemSeparatorComponent={() => <View style={{ width: CARD_GAP }} />}
-          snapToInterval={CARD_WIDTH + CARD_GAP}
-          snapToAlignment="start"
-          decelerationRate="fast"
-          renderItem={({ item }) => (
-            <View style={[styles.card, item.isToday && styles.cardToday]}>
-              <Text
-                style={[styles.cardDay, item.isToday && styles.cardDayToday]}
-              >
-                {item.label}
-              </Text>
-              {(item.menus || []).map((menu, idx) => (
-                <Text
-                  key={idx}
-                  style={[
-                    styles.cardItem,
-                    item.isToday && styles.cardItemToday,
-                  ]}
-                >
-                  • {menu}
-                </Text>
-              ))}
+        ) : (
+          <View style={styles.container}>
+            <View style={styles.infoBox}>
+              <Text style={styles.infoTitle}>라일락 운영 정보</Text>
+              <View style={styles.infoRow}>
+                <Text style={styles.infoLabel}>운영시간</Text>
+                <Text style={styles.infoValue}>11:20-14:00</Text>
+              </View>
+              <View style={styles.infoRow}>
+                <Text style={styles.infoLabel}>위치</Text>
+                <Text style={styles.infoValue}>미래관</Text>
+              </View>
             </View>
-          )}
-        />
+
+            <FlatList
+              horizontal
+              data={remaining}
+              keyExtractor={(it) => `lilac-${it.idx}`}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ paddingHorizontal: SIDE_PADDING }}
+              ItemSeparatorComponent={() => (
+                <View style={{ width: CARD_GAP }} />
+              )}
+              snapToInterval={CARD_WIDTH + CARD_GAP}
+              snapToAlignment="start"
+              decelerationRate="fast"
+              renderItem={({ item }) => (
+                <View style={[styles.card, item.isToday && styles.cardToday]}>
+                  <Text
+                    style={[
+                      styles.cardDay,
+                      item.isToday && styles.cardDayToday,
+                    ]}
+                  >
+                    {item.label}
+                  </Text>
+                  {(item.menus || []).map((menu, idx) => (
+                    <Text
+                      key={idx}
+                      style={[
+                        styles.cardItem,
+                        item.isToday && styles.cardItemToday,
+                      ]}
+                    >
+                      • {menu}
+                    </Text>
+                  ))}
+                </View>
+              )}
+            />
+          </View>
+        )}
       </View>
     </GradientScreenWrapper>
   );

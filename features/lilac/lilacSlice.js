@@ -28,7 +28,7 @@ export const getLilacMenuList = createAsyncThunk(
 const lilacSlice = createSlice({
   name: "lilac",
   initialState: {
-    menuList: [],
+    menuList: null,
     todayMenu: null,
     isLoading: false,
     error: "",
