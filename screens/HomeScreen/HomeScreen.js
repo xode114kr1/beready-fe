@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     left: 14,
     right: 14,
     bottom: 18,
-    backgroundColor: "#D6D6D6", // 스케치의 회색 배너
+    backgroundColor: "#D6D6D6",
     borderRadius: 8,
     paddingVertical: 12,
     paddingHorizontal: 14,
@@ -110,7 +110,6 @@ const styles = StyleSheet.create({
   bannerTitle: { fontSize: 14, fontWeight: "700", marginBottom: 6 },
   bannerMenu: { fontSize: 15, lineHeight: 20 },
 
-  /* 하단 버튼 2개 */
   rowButtons: {
     paddingHorizontal: 15,
     flexDirection: "row",
