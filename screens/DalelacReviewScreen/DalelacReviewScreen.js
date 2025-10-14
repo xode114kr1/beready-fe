@@ -17,7 +17,7 @@ import { getReviewList } from "../../features/review/reviewSlice";
 import { useIsFocused } from "@react-navigation/native";
 import { backApi } from "../../utils/api";
 
-export default function ReviewScreen() {
+export default function DalelacReviewScreen() {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 

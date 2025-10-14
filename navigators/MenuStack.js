@@ -2,8 +2,8 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import DalelacMenuScreen from "../screens/DalelacMenuScreen/DalelacMenuScreen";
 import DalelacMenuDetailScreen from "../screens/DalelacMenuDetailScreen/DalelacMenuDetailScreen";
-import ReviewScreen from "../screens/ReviewScreen/ReviewScreen";
-import ReviewFormScreen from "../screens/ReviewFormScreen/ReviewFormScreen";
+import DalelacReviewScreen from "../screens/DalelacReviewScreen/DalelacReviewScreen";
+import DalelacReviewFormScreen from "../screens/DalelacReviewFormScreen/DalelacReviewFormScreen";
 import MenuSelectScreen from "../screens/MenuSelectScreen/MenuSelectScreen";
 import LilacMenuScreen from "../screens/LilacMenuScreen/LilacMenuScreen";
 
@@ -46,12 +46,12 @@ export default function MenuStack() {
       />
       <Stack.Screen
         name="Review"
-        component={ReviewScreen}
+        component={DalelacReviewScreen}
         options={{ title: "리뷰" }}
       />
       <Stack.Screen
         name="ReviewForm"
-        component={ReviewFormScreen}
+        component={DalelacReviewFormScreen}
         options={{ title: "리뷰 작성" }}
       />
     </Stack.Navigator>

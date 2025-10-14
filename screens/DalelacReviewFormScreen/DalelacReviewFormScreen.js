@@ -16,7 +16,7 @@ import { backApi } from "../../utils/api";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 import { useSelector } from "react-redux";
 
-export default function ReviewFormScreen() {
+export default function DalelacReviewFormScreen() {
   const navigation = useNavigation();
   const route = useRoute();
   const { isLogin } = useSelector((state) => state.user);
