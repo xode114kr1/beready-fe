@@ -16,7 +16,7 @@ import TopReview from "./components/TopReview";
 import { useDispatch, useSelector } from "react-redux";
 import { getTopReviewList } from "../../features/review/reviewSlice";
 
-export default function MenuDetailScreen({ route }) {
+export default function DalelacMenuDetailScreen({ route }) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();

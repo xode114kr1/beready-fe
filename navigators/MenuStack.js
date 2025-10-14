@@ -1,7 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import DalelacMenuScreen from "../screens/DalelacMenuScreen/DalelacMenuScreen";
-import MenuDetailScreen from "../screens/MenuDetailScreen/MenuDetailScreen";
+import DalelacMenuDetailScreen from "../screens/DalelacMenuDetailScreen/DalelacMenuDetailScreen";
 import ReviewScreen from "../screens/ReviewScreen/ReviewScreen";
 import ReviewFormScreen from "../screens/ReviewFormScreen/ReviewFormScreen";
 import MenuSelectScreen from "../screens/MenuSelectScreen/MenuSelectScreen";
@@ -41,7 +41,7 @@ export default function MenuStack() {
       />
       <Stack.Screen
         name="MenuDetail"
-        component={MenuDetailScreen}
+        component={DalelacMenuDetailScreen}
         options={{ title: "메뉴 상세" }}
       />
       <Stack.Screen

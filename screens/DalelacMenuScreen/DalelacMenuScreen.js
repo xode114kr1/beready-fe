@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMenu } from "../../features/menu/menuSlice";
 import Spinner from "../../components/Spinner";
 
-export default function MenuScreen() {
+export default function DalelacMenuScreen() {
   const dispatch = useDispatch();
   const { menuList, error, isLoading } = useSelector((state) => state.menu);
   const navigation = useNavigation();
