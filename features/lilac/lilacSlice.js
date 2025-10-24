@@ -39,8 +39,15 @@ const lilacSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getLilacMenuList.fulfilled, (state, action) => {
+        const today = new Date();
+        const todayStr = `${today.getFullYear()}-${String(
+          today.getMonth() + 1
+        ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+        const todayMenu = action.payload.find((menu) => menu.date == todayStr);
+
         state.isLoading = false;
         state.menuList = action.payload;
+        state.todayMenu = todayMenu;
         state.error = "";
       })
       .addCase(getLilacMenuList.rejected, (state, action) => {

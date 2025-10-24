@@ -72,8 +72,8 @@ export default function LilacMenuScreen() {
 
   const todayStr = toYMD(new Date());
   const remaining = useMemo(() => {
-    const base = (menuList || lilacMenuDump)
-      .filter((d) => (d?.date || "") >= todayStr)
+    const base = menuList
+      ?.filter((d) => (d?.date || "") >= todayStr)
       .sort((a, b) => (a.date > b.date ? 1 : a.date < b.date ? -1 : 0))
       .map((d, i) => ({
         ...d,
@@ -81,7 +81,8 @@ export default function LilacMenuScreen() {
         isToday: d.date === todayStr,
       }));
     return base;
-  }, [todayStr]);
+  }, [todayStr, menuList]);
+
   return (
     <GradientScreenWrapper>
       <View style={{ flex: 1 }}>

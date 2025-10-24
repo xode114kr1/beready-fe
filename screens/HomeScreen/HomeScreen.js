@@ -5,11 +5,15 @@ import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 import { useEffect, useState } from "react";
 import { backApi } from "../../utils/api";
 import RestaurantCardCarousel from "./components/RestaurantCardCarousel";
+import { useDispatch, useSelector } from "react-redux";
+import { getLilacMenuList } from "../../features/lilac/lilacSlice";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const [randomMenu, setRandomMenu] = useState(null);
+  const { todayMenu, isLoading, error } = useSelector((state) => state.lilac);
 
   const fetchRandomMenu = async () => {
     try {
@@ -22,6 +26,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     fetchRandomMenu();
+    dispatch(getLilacMenuList());
   }, []);
 
   return (
@@ -35,7 +40,7 @@ export default function HomeScreen() {
           <Text style={styles.logoText}>Beready</Text>
         </View>
 
-        <RestaurantCardCarousel randomMenu={randomMenu} />
+        <RestaurantCardCarousel todayMenu={todayMenu} randomMenu={randomMenu} />
 
         <View style={styles.rowButtons}>
           <TouchableOpacity

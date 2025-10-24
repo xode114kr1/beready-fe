@@ -4,12 +4,9 @@ import { View, Text, Image, StyleSheet, FlatList } from "react-native";
 function LilacMenu({ todayMenu }) {
   return (
     <View>
-      <Text style={{ fontWeight: "700" }}>제육볶음</Text>
-      <Text>샐러드바</Text>
-      <View style={{ flexDirection: "row", gap: 6 }}>
-        <Text>디저트</Text>
-        <Text>(리일일, 요거트)</Text>
-      </View>
+      {todayMenu?.menus?.slice(0, 3).map((menu, idx) => (
+        <Text key={idx}>{menu}</Text>
+      ))}
     </View>
   );
 }
