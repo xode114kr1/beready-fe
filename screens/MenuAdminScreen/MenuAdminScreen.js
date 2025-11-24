@@ -17,7 +17,7 @@ import MenuItem from "./components/MenuItem";
 import MenuCreateModal from "./components/MenuCreateModal";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 import { useDispatch, useSelector } from "react-redux";
-import { getMenu } from "../../features/menu/menuSlice";
+import { createMenu, getMenu, updateMenu } from "../../features/menu/menuSlice";
 import { backApi } from "../../utils/api";
 import FullscreenLoader from "../../components/FullscreenLoader";
 
@@ -52,12 +52,8 @@ export default function MenuAdminScreen() {
 
   const handleCreate = async (newMenu, hasFile) => {
     try {
-      const res = await backApi.post("/menu", newMenu, {
-        headers: hasFile
-          ? { "Content-Type": "multipart/form-data" }
-          : undefined,
-      });
-      dispatch(getMenu());
+      await dispatch(createMenu({ newMenu, hasFile }));
+      await dispatch(getMenu());
       setIsModalVisible(false);
     } catch (error) {
       console.error("메뉴 생성 오류 : ", error);
@@ -66,12 +62,8 @@ export default function MenuAdminScreen() {
 
   const handleEdit = async (id, editMenu, hasFile) => {
     try {
-      const res = await backApi.put(`/menu/${id}`, editMenu, {
-        headers: hasFile
-          ? { "Content-Type": "multipart/form-data" }
-          : undefined,
-      });
-      dispatch(getMenu());
+      await dispatch(updateMenu({ id, editMenu, hasFile }));
+      await dispatch(getMenu());
       setIsModalVisible(false);
     } catch (error) {
       console.error("메뉴 수정 오류 : ", error);
@@ -103,7 +95,7 @@ export default function MenuAdminScreen() {
   }, [menuList, selectedCategory, search]);
 
   return (
-    <GradientScreenWrapper>
+    <GradientScreenWrapper variant="green">
       <KeyboardAvoidingView
         style={styles.avoidingView}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -172,6 +164,7 @@ export default function MenuAdminScreen() {
         onCreate={handleCreate}
         onEdit={handleEdit}
         initialData={editingMenu}
+        isLoading={isLoading}
       />
       <Modal transparent visible={categoryModalVisible} animationType="fade">
         <Pressable
@@ -194,7 +187,6 @@ export default function MenuAdminScreen() {
           </View>
         </Pressable>
       </Modal>
-      <FullscreenLoader visible={isLoading} label="저장 중..." />
     </GradientScreenWrapper>
   );
 }

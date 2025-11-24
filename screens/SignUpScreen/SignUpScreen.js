@@ -13,11 +13,13 @@ import {
 } from "react-native";
 import GradientScreenWrapper from "../../components/GradientScreenWrapper";
 import Checkbox from "expo-checkbox";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../features/user/userSlice";
+import FullscreenLoader from "../../components/FullscreenLoader";
 
 export default function SignUpScreen({ navigation }) {
   const dispatch = useDispatch();
+  const { error, isLoading } = useSelector((state) => state.user);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -85,12 +87,13 @@ export default function SignUpScreen({ navigation }) {
               />
               <Text style={styles.agreeText}>개인정보 수집 및 동의</Text>
             </View>
-
+            {error && <Text style={styles.errorText}>{error}</Text>}
             <TouchableOpacity style={styles.button} onPress={handleRegister}>
               <Text style={styles.buttonText}>가입하기</Text>
             </TouchableOpacity>
           </ScrollView>
         </TouchableWithoutFeedback>
+        <FullscreenLoader visible={isLoading} label="회원가입 중..." />
       </KeyboardAvoidingView>
     </GradientScreenWrapper>
   );
@@ -130,6 +133,13 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     fontSize: 14,
     color: "#333",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 14,
+    marginVertical: 8,
+    textAlign: "center",
+    fontWeight: "500",
   },
   button: {
     backgroundColor: "#3399FF",

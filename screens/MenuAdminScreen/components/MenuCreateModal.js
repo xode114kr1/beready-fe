@@ -15,6 +15,8 @@ import {
 } from "react-native";
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
+import FullscreenLoader from "../../../components/FullscreenLoader";
+import { useSelector } from "react-redux";
 
 export default function MenuCreateModal({
   visible,
@@ -22,6 +24,7 @@ export default function MenuCreateModal({
   onCreate,
   initialData,
   onEdit,
+  isLoading,
 }) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("분식");
@@ -256,6 +259,7 @@ export default function MenuCreateModal({
               >
                 <Text style={styles.buttonText}>취소</Text>
               </TouchableOpacity>
+              <FullscreenLoader visible={isLoading} />
             </View>
           </KeyboardAvoidingView>
         </View>
