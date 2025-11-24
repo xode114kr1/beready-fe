@@ -2,10 +2,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fastApi } from "../../utils/api";
 
 export const getEstimationLilac = createAsyncThunk(
-  "estimation/lilac",
+  "lilac/estimation",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await fastApi.get("/estimate/lilac");
+      const res = await fastApi.get("/lilac/estimation");
+      console.log(res.data);
       return res.data;
     } catch (error) {
       console.log(error);
@@ -15,7 +16,7 @@ export const getEstimationLilac = createAsyncThunk(
 );
 
 export const getEstimationdalelac = createAsyncThunk(
-  "estimation/dalelac",
+  "dalelac/estimation",
   async (category, { rejectWithValue }) => {
     try {
       cate = { 일식: "japan", 한식: "korea", 일품: "specialty" };
@@ -42,7 +43,7 @@ const estimationSlice = createSlice({
       })
       .addCase(getEstimationLilac.fulfilled, (state, action) => {
         state.time = action.payload.wait_time;
-        state.peopleCount = action.payload.people;
+        state.peopleCount = action.payload.total;
         state.isLoading = false;
         state.error = "";
       })
@@ -54,7 +55,7 @@ const estimationSlice = createSlice({
       })
       .addCase(getEstimationdalelac.fulfilled, (state, action) => {
         state.time = action.payload.wait_time;
-        state.peopleCount = action.payload.people;
+        state.peopleCount = action.payload.total;
         state.isLoading = false;
         state.error = "";
       })

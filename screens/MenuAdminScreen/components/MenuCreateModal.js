@@ -259,7 +259,7 @@ export default function MenuCreateModal({
               >
                 <Text style={styles.buttonText}>취소</Text>
               </TouchableOpacity>
-              <FullscreenLoader visible={isLoading} />
+              <FullscreenLoader visible={isLoading} label="저장 중..." />
             </View>
           </KeyboardAvoidingView>
         </View>

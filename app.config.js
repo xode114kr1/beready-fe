@@ -30,8 +30,8 @@ export default ({ config }) => ({
   },
   extra: {
     EXPRESS_DEPLOY_URL: process.env.EXPRESS_DEPLOY_URL,
-    FASTAPI_LOCAL_URL:
-      process.env.FASTAPI_LOCAL_URL ?? "http://192.168.0.138:8000/api/",
+    FASTAPI_DEPLOY_URL:
+      process.env.FASTAPI_DEPLOY_URL ?? "http://192.168.0.138:8000/api/",
     eas: { projectId: "c05012a1-77e5-4f74-9fbf-825ca3800ba5" },
   },
 });
